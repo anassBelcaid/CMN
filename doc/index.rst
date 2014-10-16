@@ -15,7 +15,7 @@ Contents:
    introduction_methodes_numeriques
 
 
-Indices and tables
+Indices et Tables
 ==================
 
 * :ref:`genindex`
