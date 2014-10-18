@@ -77,8 +77,8 @@ donc la représentation tronquée est
 .. math::
 	\begin{eqnarray}
 	x_t&=&0.06666\\
-	E_{abs}&=&|x-x_t|=6.6E^{-6}\\
-	E_{rel}&=&\dfrac{|x-x_t|}{|x|}=1E{-4}
+	E_{abs}&=&|x-x_t|=6.6\;10^{-6}\\
+	E_{rel}&=&\dfrac{|x-x_t|}{|x|}=1\;10^{-4}
 	\end{eqnarray}
 
 =====
@@ -105,9 +105,10 @@ donc la représentation tronquée est
 Exercice 3
 ===========
 
-.. sidebar:: Objectif
+.. topic:: Objectif
 
 	Codage des nombres.
+
 
 1. Calculer la représentation du nombre :math:`(101.11)_2` dans la base 10.
 
@@ -165,16 +166,8 @@ de même pour :math:`\dfrac{1}{3}` on trouve::
 
 =====
 
-3. Donner la représentation en simple précision sur un ordinateur du nombre :math:`+1101.1`
 
-	* sans tenant compte du **bit fontôme**.
-	* en tenant compte du **bit fontôme**.
-
-
-
-=====
-
-4. Représenter dans la norme *IEEE* les nombres:
+3. Représenter dans la norme *IEEE* les nombres:
 
      a) x=-9.5
      b) y=6.625
@@ -226,12 +219,49 @@ ce qui donne le codage de x.
 .. math::
 
 	x=\underbrace{0}_{signe}\;\underbrace{10000010}_{exposant}\;\underbrace{00110000000000000000000}_{mantisse}
+
 pour plus de détails voir (`IEEE_754`_)
 
 .. _IEEE_754: http://fr.wikipedia.org/wiki/IEEE_754
 
 =====
 
+
+4. Donner la représentation en simple précision sur un ordinateur du nombre :math:`+1101.1`
+
+	* sans tenant compte du **bit fontôme**.
+	* en tenant compte du **bit fontôme**.
+
+Solution
+
+
+* Le nombre est positif dans la valeur du bit signe est :math:`s=0`
+* forme normalisée::
+	
+	1.1011 2^3
+* exposant::
+  	
+  	E=3+127=130=(10000010)_2
+
+* Mantisse sans tenant compte du **bit fontôme**::
+
+    M=11011000000000000000000
+
+Ce qui donne 
+
+.. math::
+	
+	E_{1}=\underbrace{0}_{signe}\;\underbrace{10000010}_{exposant}\;\underbrace{11011000000000000000000}_{mantisse}
+
+* Mantisse en tenant compte du **bit fontôme**::
+  	
+	M=10110000000000000000000
+
+.. math::
+
+	E_{1}=\underbrace{0}_{signe}\;\underbrace{10000010}_{exposant}\;\underbrace{10110000000000000000000}_{mantisse}	
+
+=====
 
 5. En utilisant le logiciel **Matlab** calculer le plus grand **entier** naturel tel que :math:`\mathbf{e^n}` est représentée dans la machine.
   
@@ -250,13 +280,15 @@ pour plus de détails voir (`IEEE_754`_)
 	:linenos:
 	:emphasize-lines: 8
 
+=======
+
 6. Déterminer l'ensemble :math:`\mathcal{F}(2,3,-1,3)` ? 
 
 L'ensemble :math:`\mathcal{F}(\beta,t,L,U)` des nombres a virgules flottante est défini par:
 
 .. math::
 
-	\mathcal{F}=\{y=m\beta^{e-t},(m,e) \in \mathbb{Z}^2/ \beta^{t-1}\leq m \leq \beta^t -1, L \leq e \leq U \}
+	\mathcal{F}=\{y=\pm\;m\beta^{e-t},(m,e) \in \mathbb{Z}^2/ \beta^{t-1}\leq m \leq \beta^t -1, L \leq e \leq U \}
 
 * :math:`\beta` s'appelle la **base**.
 * :math:`t` est la **précision**.
@@ -288,14 +320,55 @@ donc pour :math:`\mathcal{F}(2,3,-1,3)` on trouve:
 
 * min= :math:`2^{-1-1}=2^{-2}=0.25`
 
-* max= :math:`2^3*(1-2^-1)=4`
+* max= :math:`2^3*(1-2^{-3})=7`
 * :math:`card(\mathcal{F})=2*(2^2*(2-1))*(3+1+1)=40`
 
+* partie positive de :math:`\mathcal{F}`::
+
+	{0.25 ,0.3125, 0.375,0.4375,0.5,0.625,0.75,0.875}
+	{1,1.25,1.5 ,1.75}
+	{2,2.5,3,3.5}
+	{4,5,7}
+
+
+**Script Matlab**
 
 .. literalinclude:: ../codes/tp01/exercice3_2.m
 	:language: matlab
 
 
 
+.. _exercice4:
+
+=======
+
+Exercice 4
+===========
+
+.. topic:: Objectif
+
+	Observer, à travers un exemple, la différence fondamentale entre le calcul algébrique et le calcul numérique.
 
 
+1. Sous *Matlab*, calculer les expressions:
+
+.. math::
+
+	y=\dfrac{(x+1)-1}{x}
+
+et 
+
+.. math::
+
+	z=\dfrac{x+(1-1)}{x}
+
+pour :math:`x=10^{-7},10^{-8},\ldots,10^{-17}`
+
+.. literalinclude:: ../codes/tp01/exercice4.m
+	:language: matlab
+
+2. Que constatez-vous?
+
+.. todo::
+	
+	ecrire un commentaire.
