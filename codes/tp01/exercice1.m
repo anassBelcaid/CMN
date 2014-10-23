@@ -5,7 +5,7 @@
 format long
 
 x=0.6+0.2+0.2+0.2
-
+fprintf('x=%.17f\n',x)
 %calcul de la valeur de y
 y=sqrt(2)*sqrt(2)-2
 

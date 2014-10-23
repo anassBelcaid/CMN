@@ -52,8 +52,7 @@ Exercice 1
 
 	* dans le calcul de la formule de **z** on a utiliser **4./3** pour éviter la division entière.
 	
-pour **y** et **z**, on obtient pas la même valeur algébrique, car :math:`\sqrt{2}` ne peut être correctement représentée par la machine, idem pour :math:`\dfrac{4}{3}`. 
-Pour l'expression **x**, ce qui n'est pas le cas car  :math:`0.2` et :math:`0.6` **correctement** représentées.
+
 
 
 .. _exercice2:
@@ -338,9 +337,9 @@ donc pour :math:`\mathcal{F}(2,3,-1,3)` on trouve:
 
 
 
-.. _exercice4:
-
 =======
+
+.. _exercice4:
 
 Exercice 4
 ===========
@@ -372,3 +371,35 @@ pour :math:`x=10^{-7},10^{-8},\ldots,10^{-17}`
 .. todo::
 	
 	ecrire un commentaire.
+
+======
+
+
+.. _exercice5:
+
+Exercice 5
+==============
+
+.. topic:: Objectif
+	
+	Observer à travers deux exemples, la soustraction entre  de deux nombres **voisins**.
+
+1. On considère l'expression :math:`\sqrt{x+1}-\sqrt{x}\;` avec :math:`x>0`
+
+  a) Sous **Matlab**, calculer :math:`E` et :math:`E^{'}=\dfrac{1}{\sqrt{x+1}+\sqrt{x}}` pour :math:`x=10^9` et :math:`x=10^6`
+     
+
+.. literalinclude:: ../codes/tp01/exercice5-1.m
+	:language: matlab
+
+  c) Que constatez-vous?
+
+2. On considère l'équation de second degré :math:`ax^2+bx+c`
+
+  a) Sous Matlab, résoudre l'équation dans les cas suivants :
+     
+     - :math:`a=6,\; b=5,\; c=-4`
+     - :math:`a=10^{-8},\; b=0.8,\; c=10^{-8}`
+   
+  b) Vérifier que les solutions obenues sont des **racines** de  l'équation. Que constatez-vous?
+  c) Donner une expression des solutions pour **améliorer** ces racines.

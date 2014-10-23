@@ -34,6 +34,7 @@ F=[-F;F];
 F=sort(F);
 
 %% Représentation graphique
+%vector of colors
 scatter(F,zeros(size(F)),'filled');
 grid on
 title('Distribution des nombres F(2,3,-1,1)');
