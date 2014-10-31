@@ -1,6 +1,6 @@
 %% script pour illuster la soustration de deux nombres voisins
 
-%lecture de x
+%demander à l'utilisateur la saisie de x
 x=input('donner la valeur de x:');
 
 
@@ -11,4 +11,4 @@ E1=sqrt(x+1)-sqrt(x);
 E2=1.0/(sqrt(x+1)+sqrt(x));
 
 %Affichage
-fprintf('%.16f\t%.16f\t%e\n',E1,E2,abs(E1-E2))
+fprintf('E1=%.4e\tE2=%.4e\tdiff=%.4e\n',E1,E2,abs(E1-E2))

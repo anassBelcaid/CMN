@@ -173,11 +173,11 @@ de même pour :math:`\dfrac{1}{3}` on trouve::
      c) z= :math:`\frac{1}{10}` 
 
 
-**Codage de x**
+**Codage de y**
 
 partie entière::
 
-	9=(8+1)=(1001)_2
+	6=(4+2)=(110)_2
 
 partie réelle
 
@@ -192,11 +192,11 @@ partie réelle
 
 donc::
 	
-	6.625=1001.101
+	6.625=110.101
 
 Mise en forme **normalisée** pour éliminer le bit fontôme::
 
-	6.625=1.00110*2^3
+	6.625=1.10101*2^2
 
 en **simple précision** on utilise *8 bits* pour l'exposant donc la valeur du **décalage** est.
 
@@ -207,17 +207,17 @@ en **simple précision** on utilise *8 bits* pour l'exposant donc la valeur du *
 
 donc l'exposant à coder est ::
 
-	E=3+127=130=(10000010)
+	E=2+127=129=(10000001)
 
 et la mantisse est la partie après la virgule, remplie de :math:`0` **vers la droite** pour obtenir *23 bits*::
 
-	M=00110000000000000000000
+	M=10101000000000000000000
 
 ce qui donne le codage de x.
 
 .. math::
 
-	x=\underbrace{0}_{signe}\;\underbrace{10000010}_{exposant}\;\underbrace{00110000000000000000000}_{mantisse}
+	x=\underbrace{1}_{signe}\;\underbrace{10000001}_{exposant}\;\underbrace{10101000000000000000000}_{mantisse}
 
 pour plus de détails voir (`IEEE_754`_)
 
@@ -368,9 +368,23 @@ pour :math:`x=10^{-7},10^{-8},\ldots,10^{-17}`
 
 2. Que constatez-vous?
 
-.. todo::
-	
-	ecrire un commentaire.
+On remarque que pour la valeur de :math:`z` on obtient un résultat correct, car vu l'ordre des parenthèses, on doit évaluer :math:`1-1` et puis :math:`\dfrac{x}{x}`, mais pour la valeur de :math:`y` on doit **soutraire** :math:`x+1` et :math:`1` qui sont deux entités très *proches* et donc on introduit **erreur de cancelallation** sur les chiffres significatifs. 
+
+On peut voir cette erreur dans un exemple simple , avec :math:`\beta=10` et :math:`t=2`, où on calcule::
+
+	a-b=1 -0.99
+
+.. math:: 
+
+	a=0.10\;10^1\\
+	b=0.09\;10^1\\
+
+	\Longrightarrow a-b=0.01\; 10^1=0.1
+
+
+.. note::
+
+	On remarque que le résultat a été amplifié par un ordre de :math:`10`
 
 ======
 
@@ -387,12 +401,15 @@ Exercice 5
 1. On considère l'expression :math:`\sqrt{x+1}-\sqrt{x}\;` avec :math:`x>0`
 
   a) Sous **Matlab**, calculer :math:`E` et :math:`E^{'}=\dfrac{1}{\sqrt{x+1}+\sqrt{x}}` pour :math:`x=10^9` et :math:`x=10^6`
-     
+    
 
-.. literalinclude:: ../codes/tp01/exercice5-1.m
+  b) Que constatez-vous?
+	
+ Même remarque que la question précedante, pour l'expression :math:`E` où on soustrait deux valeurs **très proches**.
+
+.. literalinclude:: ../codes/tp01/exercice5_1.m
 	:language: matlab
 
-  c) Que constatez-vous?
 
 2. On considère l'équation de second degré :math:`ax^2+bx+c`
 
@@ -401,5 +418,160 @@ Exercice 5
      - :math:`a=6,\; b=5,\; c=-4`
      - :math:`a=10^{-8},\; b=0.8,\; c=10^{-8}`
    
-  b) Vérifier que les solutions obenues sont des **racines** de  l'équation. Que constatez-vous?
+  b) Vérifier que les solutions obtenues sont des **racines** de  l'équation. Que constatez-vous?
   c) Donner une expression des solutions pour **améliorer** ces racines.
+
+
+Fonction **matlab** pour calculer les racines d'un polynôme second degré.
+
+.. literalinclude:: ../codes/tp01/polynome2.m
+	:language: matlab
+
+script pour tester la fonction et vérifier les **racines**.
+
+.. literalinclude:: ../codes/tp01/exercice5_2.m
+	:language: matlab
+
+=====
+
+.. exercice6:: 
+Exercice 6
+==========
+
+.. topic:: Objectif
+
+	Observer, à travers un exemple, l'addition d'un très grand et d'un très petit nombre.
+
+1. Ecrire une fonction en language **Matlab** qui calcule la somme  :math:`s` suivante:
+   
+.. math::
+
+	s=\sum_{k=1}^n a_k \quad \mbox{avec} \; a_k=\dfrac{1}{k(k+1)}
+
+avec :math:`n=10000`
+
+ a) En utilisant un algorithme qui calcule :math:`a_1` puis :math:`a_1+a_2` puis :math:`a_1+a_2+a_3` etc.
+ b) En utilisant un algorithme qui calcule :math:`a_n` puis :math:`a_n+a_{n-1}` puis :math:`a_n+a_{n-1}+a_{n-2}` etc.
+
+2. Que constatez vous?
+  
+On peut calculer la valeur de cette **série** par.
+
+.. math::
+   
+   \dfrac{1}{n*(n+1)}=\dfrac{A}{n}+\dfrac{B}{n+1} \Longrightarrow \left\{ \begin{array}[l]j
+     A=1\\ B=-1\end{array}\right.
+
+
+et donc on peut ecrire la somme sous la forme: 
+
+.. math::
+   \begin{eqnarray}
+   \sum_{k=1}^n \dfrac{1}{k*(k+1)}&=& \sum_{k=1}^n \dfrac{1}{k} - \sum_{k=1}^n \dfrac{1}{(k+1)} \\
+                                  &=&1 - \dfrac{1}{n+1}\\
+                                  &=& \dfrac{n}{n+1}
+   \end{eqnarray}
+
+
+
+
+**fonctions matlab**
+
+.. literalinclude:: ../codes/tp01/exercice6.m
+	:language: matlab
+
+Résultats::
+	
+	err1=1.310063e-14	err2=1.110223e-16
+
+
+Quand on somme deux nombres on doit les mettre au même exposant( **le plus grand**), et donc pour éviter une **cancellation des chiffres significatifs** il est préférable d'éviter la somme entre deux termes de différents ordre. chose qu'on remarque pour la **première somme** car pour :math:`k` très grand :math:`\dfrac{1}{k*(k+1)}` devient négligeable devant :math:`S`, ce qui est évité dans la **deuxième somme** car on commence par les termes les plus petits. et donc  :math:`s_2` donne une **meilleure** approximation que  :math:`s_1`.
+
+
+=====
+
+
+.. _exercice7: 
+Exercice 7
+===========
+
+.. topic:: Objectif
+
+	Un exemple d'instabilité numérique dans un processus de calcul itératif.
+
+
+On veut calculer la valeur de l'intégrale 
+
+.. math::
+
+    I_n=\int_{0}^{1} \dfrac{x^n}{x+10} 
+   
+
+1. Montrer que  :math:`\forall n\; \in \mathbb{N}`, on a  :math:`I_n \in \mathbb{R}^+` 
+2. Trouver une relation de **récurrence** entre  :math:`I_n` et  :math:`I_{n-1}`
+3. En utilisant *Matlab* calculer une approximation de  :math:`I_n`
+4. Calculer d'une manière *formelle* une approximation de  :math:`I_n`
+5. Que constatez-vous?  
+
+
+=====
+
+.. math::
+   
+   \forall n \in \mathbb{N}; \forall x \in [0,1] ,\quad \dfrac{x^n}{x+10}\ge 0 \Longrightarrow I_n \ge 0 
+
+
+Calcul d'une relation de récurrence :
+
+Par une **division euclidienne** de  :math:`x^n` par  :math:`x+10` on obtient
+
+.. math::
+
+   \begin{eqnarray}
+   x^n&=&x^{n-1}(x+10) -10x^{n-1}\\
+   \dfrac{x^n}{x+10}&=&x^{n-1}-10 \dfrac{x^{n-1}}{x+10} 
+   \end{eqnarray}
+
+donc 
+
+.. math::
+   
+    \begin{eqnarray}
+    I_n&=&\int_{0}^1 \dfrac{x^n}{x+10}\\
+    	&=& \int_0^1 x^{n-1} - 10 \int_0^1 \dfrac{x^{n-1}}{x+10}\\ 
+    	&=& \big[\dfrac{x^n}{n} \big]_0^1 -10 I_{n-1}\\
+    	&=& \dfrac{1}{n} -10I_{n-1}
+    \end{eqnarray} 
+
+et  :math:`I_0=log(\dfrac{11}{10})`
+
+
+Fonction *Matlab* pour le calcul d'une approximation de l'intégrale.
+
+.. literalinclude:: ../codes/tp01/integraleR.m
+	:language: matlab
+
+
+script pour tester les valeurs de l'intégrale pour différents valeurs de  :math:`n`
+
+.. literalinclude:: ../codes/tp01/exercice7.m
+	:language: matlab
+
+
+Calcul d'une expression de la valeur de  :math:`I_n` en utilisant la relation de récurrence.
+
+.. math::
+   
+   \begin{eqnarray} 
+   	I_n&=&\dfrac{1}{n}-10I_{n-1}\\
+   	   &=&\dfrac{1}{n}-10I_{n-1}+10^2I_{n-2}\\
+   	   &=&\dfrac{1}{n}-\dfrac{10}{n-1} +\dfrac{10^2}{n-2} -10^3I_{n-3}\\
+   	   &=&\sum_{k=0}^{n-1} (-1)^{(n-k)}\dfrac{10^k}{n-k}+ (-1)^s\;10^nlog(\dfrac{11}{10})
+   \end{eqnarray}
+
+
+où la valeur de  :math:`s` dépend de la *parité* de n.
+
+.. note::
+
+	La valeur de  :math:`log(\dfrac{11}{10})` n'est pas correctement représentée dans la machine et contient un erreur de représentation en **double précision**, et dans le processus itératif cette erreur est multiplié par  :math:`(-1)^s 10^n`,  et donc naturellement quand  :math:`n` devient grand on remarque que  :math:`I_n` explose et tend vers  :math:`\pm \infty` 
