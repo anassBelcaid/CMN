@@ -1,0 +1,770 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction aux méthodes numériques &mdash; Méthodes numériques 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Méthodes numériques 0.0.1 documentation" href="index.html" />
+    <link rel="prev" title="Simple introduction à Matlab" href="matlab.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="matlab.html" title="Simple introduction à Matlab"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Méthodes numériques 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction-aux-methodes-numeriques">
+<span id="introduction-methodes-numeriques"></span><h1>Introduction aux méthodes numériques<a class="headerlink" href="#introduction-aux-methodes-numeriques" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="exercice-1">
+<span id="exercice1"></span><h2>Exercice 1<a class="headerlink" href="#exercice-1" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Objectif</p>
+<p class="last">Observer la différence entre le calcul <strong>algébrique</strong> et le calcul <strong>numérique</strong></p>
+</div>
+<p>1- Calculer <strong>algébriquement</strong> les expressions suivantes:</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+x&amp;=&amp;0.6+0.2+0.2+0.2\\
+y&amp;=&amp;\sqrt{2}*\sqrt{2}-2\\
+z&amp;=&amp;1-3*(\dfrac{4}{3}-1)
+\end{eqnarray}\end{split}\]</div>
+<hr class="docutils" />
+<p>2- Calculer <strong>numériquement</strong> les expressions ci-dessus en utilisant le logiciel <em>Matlab</em> et le <strong>format long</strong> pour afficher les résultats</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%mettre le format en long</span>
+<span class="n">format</span> <span class="n">long</span>
+
+<span class="c">%affectation de x avec un affichage</span>
+<span class="n">x</span><span class="p">=</span><span class="mf">0.6</span><span class="o">+</span><span class="mf">0.2</span><span class="o">+</span><span class="mf">0.2</span><span class="o">+</span><span class="mf">0.2</span>
+
+<span class="c">%calcul de y en utilisant la fonction racine(==&gt; sqrt)</span>
+<span class="n">y</span><span class="p">=</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span>
+
+<span class="c">%Calcul de la valeur de z</span>
+<span class="n">z</span><span class="p">=</span><span class="mi">1</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mf">4.</span><span class="o">/</span><span class="mi">3</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last">
+<li><p class="first">le <strong>codage</strong> en Matlab est en double précision, et la fonction <em>format</em> ne change pas le codage mais plutôt l&#8217;affichage, pour les autres formats disponibles:</p>
+<div class="highlight-python"><div class="highlight"><pre>help format
+</pre></div>
+</div>
+</li>
+<li><p class="first">dans le calcul de la formule de <strong>z</strong> on a utiliser <strong>4./3</strong> pour éviter la division entière.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="exercice-2">
+<span id="exercice2"></span><h2>Exercice 2<a class="headerlink" href="#exercice-2" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Objectif</p>
+<p class="last">Comparer la représentation <strong>tronquée</strong> et la représentation <strong>arrondie</strong>.</p>
+</div>
+<p>On considère le nombre réel <span class="math">\(x=\dfrac{1}{15}\)</span></p>
+<p>1- Donner la représentation <strong>tronquée</strong> à 5 chiffres en base 10, l&#8217;erreur absolue et l&#8217;erreur relative.:</p>
+<div class="highlight-python"><div class="highlight"><pre>la valeur de x est:
+x=0.0666666666...
+</pre></div>
+</div>
+<p>donc la représentation tronquée est</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+x_t&amp;=&amp;0.06666\\
+E_{abs}&amp;=&amp;|x-x_t|=6.6\;10^{-6}\\
+E_{rel}&amp;=&amp;\dfrac{|x-x_t|}{|x|}=1\;10^{-4}
+\end{eqnarray}\end{split}\]</div>
+<hr class="docutils" />
+<p>2- Donner la représentation <strong>arrondie</strong> à 5 chiffres en base 10, avec l&#8217;erreur absolue et l&#8217;erreur relative.</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+x_{arr}&amp;=&amp;0.06667\\
+E_{abs}&amp;=&amp;|x-x_{arr}|=3.3\;10^{-6}\\
+E_{rel}&amp;=&amp;\dfrac{|x-x_{arr}|}{|x|}=4\;10^{-5}
+\end{eqnarray}\end{split}\]</div>
+<p>3- Commenter les résultats.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">l&#8217;erreur d&#8217;arrondie est inférieure à celle de troncature,</p>
+</div>
+</div>
+<div class="section" id="exercice-3">
+<span id="exercice3"></span><h2>Exercice 3<a class="headerlink" href="#exercice-3" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Objectif</p>
+<p>Codage des nombres.</p>
+</div>
+<ol class="arabic simple">
+<li>Calculer la représentation du nombre <span class="math">\((101.11)_2\)</span> dans la base 10.</li>
+</ol>
+<p><strong>partie entière</strong></p>
+<div class="math">
+\[(101)_2=\mathbf{1}*2^2+\mathbf{0}*2^{1}+\mathbf{1}*2^{0}=4+1=\mathbf{5}\]</div>
+<p><strong>partie réelle</strong></p>
+<div class="math">
+\[(.11)_2=\mathbf{1}*(\frac{1}{2})^1+\mathbf{1}*(\frac{1}{2})^2=\dfrac{1}{2}+\dfrac{1}{4}=0.75\]</div>
+<p>donc</p>
+<div class="math">
+\[\begin{equation}
+(101.11)_2=5.75
+\end{equation}\]</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="2">
+<li>Calculer la représentation des nombres <span class="math">\(0.1\)</span> et <span class="math">\(\dfrac{1}{3}\)</span> dans la base <strong>2</strong>.</li>
+</ol>
+<div class="math">
+\[\begin{split}\begin{array}[|l|c|r]
+ \hline
+  0.1*2=\mathbf{0}.2 &amp; \rightarrow &amp; rep=0.\mathbf{0} \\
+  0.2*2=\mathbf{0}.4 &amp; \rightarrow &amp; rep=0.0\mathbf{0} \\
+  0.4*2=\mathbf{0}.8 &amp; \rightarrow &amp; rep=0.00\mathbf{0} \\
+  0.8*2=\mathbf{1}.6 &amp; \rightarrow &amp; rep=0.000\mathbf{1} \\
+  0.6*2=\mathbf{1}.2 &amp; \rightarrow &amp; rep=0.0001\mathbf{1} \\
+\end{array}\end{split}\]</div>
+<p>La représentation de <span class="math">\(0.2\)</span> est cyclique avec un cycle <span class="math">\(0011\)</span></p>
+<p>donc</p>
+<div class="math">
+\[0.1=(0.0001100110011\ldots)\]</div>
+<p>de même pour <span class="math">\(\dfrac{1}{3}\)</span> on trouve:</p>
+<div class="highlight-python"><div class="highlight"><pre>1/3=0.010101...
+</pre></div>
+</div>
+<hr class="docutils" />
+<ol class="arabic" start="3">
+<li><p class="first">Représenter dans la norme <em>IEEE</em> les nombres:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>x=-9.5</li>
+<li>y=6.625</li>
+<li>z= <span class="math">\(\frac{1}{10}\)</span></li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+<p><strong>Codage de y</strong></p>
+<p>partie entière:</p>
+<div class="highlight-python"><div class="highlight"><pre>6=(4+2)=(110)_2
+</pre></div>
+</div>
+<p>partie réelle</p>
+<div class="math">
+\[\begin{split}\begin{array}[|l|c|r]
+ \hline
+  0.625*2=\mathbf{1}.25 &amp; \rightarrow &amp; 0.\mathbf{1} \\
+  0.25*2=\mathbf{0}.5 &amp; \rightarrow &amp; 0.10 \\
+  0.5*2=\mathbf{1} &amp; \rightarrow &amp; 0.101 \\
+\end{array}\end{split}\]</div>
+<p>donc:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mf">6.625</span><span class="o">=</span><span class="mf">110.101</span>
+</pre></div>
+</div>
+<p>Mise en forme <strong>normalisée</strong> pour éliminer le bit fontôme:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mf">6.625</span><span class="o">=</span><span class="mf">1.10101</span><span class="o">*</span><span class="mi">2</span><span class="o">^</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>en <strong>simple précision</strong> on utilise <em>8 bits</em> pour l&#8217;exposant donc la valeur du <strong>décalage</strong> est.</p>
+<div class="math">
+\[decalage=2^{(8-1)}-1=127\]</div>
+<p>donc l&#8217;exposant à coder est</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">E</span><span class="o">=</span><span class="mi">2</span><span class="o">+</span><span class="mi">127</span><span class="o">=</span><span class="mi">129</span><span class="o">=</span><span class="p">(</span><span class="mi">10000001</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>et la mantisse est la partie après la virgule, remplie de <span class="math">\(0\)</span> <strong>vers la droite</strong> pour obtenir <em>23 bits</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">M</span><span class="o">=</span><span class="mi">10101000000000000000000</span>
+</pre></div>
+</div>
+<p>ce qui donne le codage de x.</p>
+<div class="math">
+\[x=\underbrace{1}_{signe}\;\underbrace{10000001}_{exposant}\;\underbrace{10101000000000000000000}_{mantisse}\]</div>
+<p>pour plus de détails voir (<a class="reference external" href="http://fr.wikipedia.org/wiki/IEEE_754">IEEE_754</a>)</p>
+<hr class="docutils" />
+<ol class="arabic" start="4">
+<li><p class="first">Donner la représentation en simple précision sur un ordinateur du nombre <span class="math">\(+1101.1\)</span></p>
+<blockquote>
+<div><ul class="simple">
+<li>sans tenant compte du <strong>bit fontôme</strong>.</li>
+<li>en tenant compte du <strong>bit fontôme</strong>.</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<p>Solution</p>
+<ul>
+<li><p class="first">Le nombre est positif dans la valeur du bit signe est <span class="math">\(s=0\)</span></p>
+</li>
+<li><p class="first">forme normalisée:</p>
+<div class="highlight-python"><div class="highlight"><pre>1.1011 2^3
+</pre></div>
+</div>
+</li>
+<li><p class="first">exposant:</p>
+<div class="highlight-python"><div class="highlight"><pre>E=3+127=130=(10000010)_2
+</pre></div>
+</div>
+</li>
+<li><p class="first">Mantisse sans tenant compte du <strong>bit fontôme</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">M</span><span class="o">=</span><span class="mi">11011000000000000000000</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Ce qui donne</p>
+<div class="math">
+\[E_{1}=\underbrace{0}_{signe}\;\underbrace{10000010}_{exposant}\;\underbrace{11011000000000000000000}_{mantisse}\]</div>
+<ul>
+<li><p class="first">Mantisse en tenant compte du <strong>bit fontôme</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">M</span><span class="o">=</span><span class="mi">10110000000000000000000</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="math">
+\[E_{1}=\underbrace{0}_{signe}\;\underbrace{10000010}_{exposant}\;\underbrace{10110000000000000000000}_{mantisse}\]</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="5">
+<li>En utilisant le logiciel <strong>Matlab</strong> calculer le plus grand <strong>entier</strong> naturel tel que <span class="math">\(\mathbf{e^n}\)</span> est représentée dans la machine.</li>
+</ol>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<ul class="last">
+<li><p class="first">Consulter la documentation de la fonction <strong>isfinite</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>help isfinite
+</pre></div>
+</div>
+</li>
+<li><p class="first">Penser à une boucle <strong>while</strong></p>
+</li>
+</ul>
+</div>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">%% script pour calculer le plus grand entier</span>
+<span class="c">% tel que exp(n) est représentée dans la machine</span>
+
+<span class="c">%initialisation</span>
+<span class="n">n</span><span class="p">=</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="c">%boucle tant que exp(n) est  fini</span>
+<span class="hll"><span class="k">while</span><span class="p">(</span><span class="nb">isfinite</span><span class="p">(</span><span class="nb">exp</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+</span>    <span class="n">n</span><span class="p">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="c">% A ce stade exp(n) est inifini donc le nombre qui nous interesse est n-1</span>
+<span class="n">sol</span><span class="p">=</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="c">%simple affichage avec fprintf pour vérifier le résultat</span>
+
+<span class="c">%afficher exp(sol)</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;exp(%d)=%e\t&#39;</span><span class="p">,</span><span class="n">sol</span><span class="p">,</span><span class="nb">exp</span><span class="p">(</span><span class="n">sol</span><span class="p">))</span>
+<span class="c">%afficher exp(sol+1)</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;exp(%d)=%e\n&#39;</span><span class="p">,</span><span class="n">sol</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nb">exp</span><span class="p">(</span><span class="n">sol</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</td></tr></table></div>
+<hr class="docutils" />
+<ol class="arabic simple" start="6">
+<li>Déterminer l&#8217;ensemble <span class="math">\(\mathcal{F}(2,3,-1,3)\)</span> ?</li>
+</ol>
+<p>L&#8217;ensemble <span class="math">\(\mathcal{F}(\beta,t,L,U)\)</span> des nombres a virgules flottante est défini par:</p>
+<div class="math">
+\[\mathcal{F}=\{y=\pm\;m\beta^{e-t},(m,e) \in \mathbb{Z}^2/ \beta^{t-1}\leq m \leq \beta^t -1, L \leq e \leq U \}\]</div>
+<ul class="simple">
+<li><span class="math">\(\beta\)</span> s&#8217;appelle la <strong>base</strong>.</li>
+<li><span class="math">\(t\)</span> est la <strong>précision</strong>.</li>
+<li><span class="math">\(L, U\)</span> l&#8217;intervalle de l&#8217;exposant.</li>
+<li>le plus petit nombre en valeur absolue :</li>
+</ul>
+<div class="math">
+\[\beta^{t-1}\beta^{L-t}=\beta^{L-1}\]</div>
+<ul class="simple">
+<li>le plus grand nombre :</li>
+</ul>
+<div class="math">
+\[(\beta^{t}-1)\beta^{U-t}=\beta^{U}(1-\beta^{-t})\]</div>
+<ul class="simple">
+<li>et finalement le cardinal de <span class="math">\(\mathcal{F}\)</span> est :</li>
+</ul>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+card(\mathcal{F})&amp;=&amp;card([-1,1])*card([\beta^{t-1},\beta^{t}-1])*card([L,U])\\
+                 &amp;=&amp;2*(\beta^{t}-1-\beta^{t-1}+1) *(U-L+1)\\
+                 &amp;=&amp;2*(\beta^{t-1}(\beta-1))*(U-L+1)
+\end{eqnarray}\end{split}\]</div>
+<p>donc pour <span class="math">\(\mathcal{F}(2,3,-1,3)\)</span> on trouve:</p>
+<ul>
+<li><p class="first">min= <span class="math">\(2^{-1-1}=2^{-2}=0.25\)</span></p>
+</li>
+<li><p class="first">max= <span class="math">\(2^3*(1-2^{-3})=7\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(card(\mathcal{F})=2*(2^2*(2-1))*(3+1+1)=40\)</span></p>
+</li>
+<li><p class="first">partie positive de <span class="math">\(\mathcal{F}\)</span>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="mf">0.25</span> <span class="p">,</span><span class="mf">0.3125</span><span class="p">,</span> <span class="mf">0.375</span><span class="p">,</span><span class="mf">0.4375</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.625</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.875</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.25</span><span class="p">,</span><span class="mf">1.5</span> <span class="p">,</span><span class="mf">1.75</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">3.5</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>Script Matlab</strong></p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% Script pour représenter graphiquement les nombre de l&#39;ensemble</span>
+
+
+<span class="c">%% Initialisation des constantes de l&#39;ensemble</span>
+<span class="n">B</span><span class="p">=</span><span class="mi">2</span><span class="p">;</span>
+<span class="n">t</span><span class="p">=</span><span class="mi">3</span><span class="p">;</span>
+<span class="n">L</span><span class="p">=</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">U</span><span class="p">=</span><span class="mi">3</span><span class="p">;</span>
+
+<span class="c">%% Initialisation de l&#39;enemble sous forme d&#39;un vecteur en 0</span>
+<span class="c">% calcul du cardinal de F</span>
+<span class="n">N</span><span class="p">=</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">B</span>^<span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">B</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">U</span><span class="o">-</span><span class="n">L</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c">% Initalisation de l&#39;ensemble</span>
+<span class="n">F</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="nb">j</span><span class="p">=</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="c">% Calcul des elements min et max pour m</span>
+<span class="n">mInf</span><span class="p">=</span><span class="mi">2</span>^<span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">mMax</span><span class="p">=</span><span class="mi">2</span>^<span class="n">t</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="c">%% Construction de la  partie positive</span>
+<span class="k">for</span> <span class="n">e</span><span class="p">=</span><span class="n">L</span><span class="p">:</span><span class="n">U</span>              <span class="c">% boucle sur les exposantes</span>
+    <span class="k">for</span> <span class="n">m</span><span class="p">=</span><span class="n">mInf</span><span class="p">:</span><span class="n">mMax</span>    <span class="c">% boocle sur la mantisse</span>
+        <span class="n">F</span><span class="p">(</span><span class="nb">j</span><span class="p">)=</span><span class="n">m</span><span class="o">*</span><span class="mi">2</span>^<span class="p">(</span><span class="n">e</span><span class="o">-</span><span class="n">t</span><span class="p">);</span>
+        <span class="nb">j</span><span class="p">=</span><span class="nb">j</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c">%% Ajouter les elements négatifs</span>
+<span class="n">F</span><span class="p">=[</span><span class="o">-</span><span class="n">F</span><span class="p">;</span><span class="n">F</span><span class="p">];</span>
+
+<span class="c">% Mettre F en ordre</span>
+<span class="n">F</span><span class="p">=</span><span class="n">sort</span><span class="p">(</span><span class="n">F</span><span class="p">);</span>
+
+<span class="c">%% Représentation graphique</span>
+<span class="c">%vector of colors</span>
+<span class="n">scatter</span><span class="p">(</span><span class="n">F</span><span class="p">,</span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">F</span><span class="p">)),</span><span class="s">&#39;filled&#39;</span><span class="p">);</span>
+<span class="n">grid</span> <span class="n">on</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;Distribution des nombres F(2,3,-1,1)&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="exercice-4">
+<span id="exercice4"></span><h2>Exercice 4<a class="headerlink" href="#exercice-4" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Objectif</p>
+<p>Observer, à travers un exemple, la différence fondamentale entre le calcul algébrique et le calcul numérique.</p>
+</div>
+<ol class="arabic simple">
+<li>Sous <em>Matlab</em>, calculer les expressions:</li>
+</ol>
+<div class="math">
+\[y=\dfrac{(x+1)-1}{x}\]</div>
+<p>et</p>
+<div class="math">
+\[z=\dfrac{x+(1-1)}{x}\]</div>
+<p>pour <span class="math">\(x=10^{-7},10^{-8},\ldots,10^{-17}\)</span></p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% script pour montrer la différence entre le calcul numérique</span>
+<span class="c">% et le calcul algébrique</span>
+
+<span class="c">%initiation du tableau des indcies=(-7,-8,...,-17)</span>
+<span class="n">I</span><span class="p">=</span><span class="o">-</span><span class="mi">7</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">17</span><span class="p">;</span>
+
+<span class="c">%boucle sur les exposants pour calculer les deux expressions</span>
+<span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="n">I</span>
+    <span class="c">%calcul de x</span>
+    <span class="n">x</span><span class="p">=</span><span class="mi">10</span>^<span class="nb">i</span><span class="p">;</span>
+    <span class="c">%evaluation des expressions</span>
+    <span class="n">y</span><span class="p">=((</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">z</span><span class="p">=(</span><span class="n">x</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="n">x</span><span class="p">;</span>
+    
+    <span class="c">%affichage</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;%.17f\t%.16f\n&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Que constatez-vous?</li>
+</ol>
+<p>On remarque que pour la valeur de <span class="math">\(z\)</span> on obtient un résultat correct, car vu l&#8217;ordre des parenthèses, on doit évaluer <span class="math">\(1-1\)</span> et puis <span class="math">\(\dfrac{x}{x}\)</span>, mais pour la valeur de <span class="math">\(y\)</span> on doit <strong>soutraire</strong> <span class="math">\(x+1\)</span> et <span class="math">\(1\)</span> qui sont deux entités très <em>proches</em> et donc on introduit <strong>erreur de cancelallation</strong> sur les chiffres significatifs.</p>
+<p>On peut voir cette erreur dans un exemple simple , avec <span class="math">\(\beta=10\)</span> et <span class="math">\(t=2\)</span>, où on calcule:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span><span class="mf">0.99</span>
+</pre></div>
+</div>
+<div class="math">
+\[\begin{split}a=0.10\;10^1\\
+b=0.09\;10^1\\\end{split}\]\[\Longrightarrow a-b=0.01\; 10^1=0.1\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On remarque que le résultat a été amplifié par un ordre de <span class="math">\(10\)</span></p>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="exercice-5">
+<span id="exercice5"></span><h2>Exercice 5<a class="headerlink" href="#exercice-5" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Objectif</p>
+<p>Observer à travers deux exemples, la soustraction entre  de deux nombres <strong>voisins</strong>.</p>
+</div>
+<ol class="arabic simple">
+<li>On considère l&#8217;expression <span class="math">\(\sqrt{x+1}-\sqrt{x}\;\)</span> avec <span class="math">\(x&gt;0\)</span></li>
+</ol>
+<blockquote>
+<div><blockquote>
+<div><ol class="loweralpha simple">
+<li>Sous <strong>Matlab</strong>, calculer <span class="math">\(E\)</span> et <span class="math">\(E^{'}=\dfrac{1}{\sqrt{x+1}+\sqrt{x}}\)</span> pour <span class="math">\(x=10^9\)</span> et <span class="math">\(x=10^6\)</span></li>
+<li>Que constatez-vous?</li>
+</ol>
+</div></blockquote>
+<p>Même remarque que la question précedante, pour l&#8217;expression <span class="math">\(E\)</span> où on soustrait deux valeurs <strong>très proches</strong>.</p>
+</div></blockquote>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% script pour illuster la soustration de deux nombres voisins</span>
+
+<span class="c">%demander à l&#39;utilisateur la saisie de x</span>
+<span class="n">x</span><span class="p">=</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;donner la valeur de x:&#39;</span><span class="p">);</span>
+
+
+<span class="c">%Calcul de la premiere expression</span>
+<span class="n">E1</span><span class="p">=</span><span class="nb">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="nb">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+<span class="c">%deuxieme formule</span>
+<span class="n">E2</span><span class="p">=</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="nb">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="nb">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+
+<span class="c">%Affichage</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;E1=%.4e\tE2=%.4e\tdiff=%.4e\n&#39;</span><span class="p">,</span><span class="n">E1</span><span class="p">,</span><span class="n">E2</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">E1</span><span class="o">-</span><span class="n">E2</span><span class="p">))</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>On considère l&#8217;équation de second degré <span class="math">\(ax^2+bx+c\)</span></li>
+</ol>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>Sous Matlab, résoudre l&#8217;équation dans les cas suivants :<ul>
+<li><span class="math">\(a=6,\; b=5,\; c=-4\)</span></li>
+<li><span class="math">\(a=10^{-8},\; b=0.8,\; c=10^{-8}\)</span></li>
+</ul>
+</li>
+<li>Vérifier que les solutions obtenues sont des <strong>racines</strong> de  l&#8217;équation. Que constatez-vous?</li>
+<li>Donner une expression des solutions pour <strong>améliorer</strong> ces racines.</li>
+</ol>
+</div></blockquote>
+<p>Fonction <strong>matlab</strong> pour calculer les racines d&#8217;un polynôme second degré.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[r1,r2]<span class="p">=</span><span class="nf">polynome2</span><span class="p">(</span>a,b,c<span class="p">)</span><span class="w"></span>
+<span class="c">%% fonction pour calculer les racines du polynome</span>
+<span class="c">% ax**2+b*x +c</span>
+
+<span class="c">%% entrées:</span>
+<span class="c">% coefficients a,b,c</span>
+
+<span class="c">%% Sorties:</span>
+<span class="c">% r1,r2: les deux racines du polynome</span>
+
+<span class="c">%calcul du descriminant</span>
+<span class="n">delta</span><span class="p">=(</span><span class="n">b</span>^<span class="mi">2</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">delta</span><span class="o">&gt;</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">r1</span><span class="p">=(</span><span class="o">-</span><span class="n">b</span><span class="o">+</span><span class="nb">sqrt</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">r2</span><span class="p">=(</span><span class="o">-</span><span class="n">b</span><span class="o">-</span><span class="nb">sqrt</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">);</span>
+<span class="k">else</span>
+    <span class="c">%on choisit d&#39;afficher un message d&#39;erreur</span>
+    <span class="n">error</span><span class="p">(</span><span class="s">&#39;descriminant negatif&#39;</span><span class="p">);</span>
+<span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>script pour tester la fonction et vérifier les <strong>racines</strong>.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% tester la fonction polynome2 pour différents cas de (a,b,c)</span>
+
+<span class="c">%premier cas</span>
+<span class="n">a</span><span class="p">=</span><span class="mi">6</span><span class="p">;</span><span class="n">b</span><span class="p">=</span><span class="mi">5</span><span class="p">;</span><span class="n">c</span><span class="p">=</span><span class="o">-</span><span class="mi">4</span><span class="p">;</span>
+<span class="c">%calculer les racines en utilisant polynome2</span>
+<span class="p">[</span><span class="n">r1</span><span class="p">,</span><span class="n">r2</span><span class="p">]=</span><span class="n">polynome2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="c">%vérifier les résultats en calculant f(r1) et f(r2)</span>
+<span class="n">fr1</span><span class="p">=</span><span class="n">a</span><span class="o">*</span><span class="n">r1</span><span class="o">*</span><span class="n">r1</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">r1</span><span class="o">+</span><span class="n">c</span><span class="p">;</span>
+<span class="n">fr2</span><span class="p">=</span><span class="n">a</span><span class="o">*</span><span class="n">r2</span><span class="o">*</span><span class="n">r2</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">r2</span><span class="o">+</span><span class="n">c</span><span class="p">;</span>
+
+<span class="c">%affichage</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;f(r1)=%e\t f(r2)=%e\n&#39;</span><span class="p">,</span><span class="n">fr1</span><span class="p">,</span><span class="n">fr2</span><span class="p">)</span>
+
+<span class="c">%deuxième cas</span>
+<span class="n">a</span><span class="p">=</span><span class="mf">1E-8</span><span class="p">;</span><span class="n">b</span><span class="p">=</span><span class="o">-</span><span class="mf">0.8</span><span class="p">;</span><span class="n">c</span><span class="p">=</span><span class="mf">1E-8</span><span class="p">;</span>
+<span class="c">%calculer les racines en utilisant polynome2</span>
+<span class="p">[</span><span class="n">r1</span><span class="p">,</span><span class="n">r2</span><span class="p">]=</span><span class="n">polynome2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+
+<span class="c">%vérifier les résultats en calculant f(r1) et f(r2)</span>
+<span class="n">fr1</span><span class="p">=</span><span class="n">a</span><span class="o">*</span><span class="n">r1</span><span class="o">*</span><span class="n">r1</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">r1</span><span class="o">+</span><span class="n">c</span><span class="p">;</span>
+<span class="n">fr2</span><span class="p">=</span><span class="n">a</span><span class="o">*</span><span class="n">r2</span><span class="o">*</span><span class="n">r2</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">r2</span><span class="o">+</span><span class="n">c</span><span class="p">;</span>
+
+<span class="c">%affichage</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;f(r1)=%e\t f(r2)=%e\n&#39;</span><span class="p">,</span><span class="n">fr1</span><span class="p">,</span><span class="n">fr2</span><span class="p">)</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</div>
+<div class="section" id="exercice-6">
+<h2>Exercice 6<a class="headerlink" href="#exercice-6" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Objectif</p>
+<p>Observer, à travers un exemple, l&#8217;addition d&#8217;un très grand et d&#8217;un très petit nombre.</p>
+</div>
+<ol class="arabic simple">
+<li>Ecrire une fonction en language <strong>Matlab</strong> qui calcule la somme  <span class="math">\(s\)</span> suivante:</li>
+</ol>
+<div class="math">
+\[s=\sum_{k=1}^n a_k \quad \mbox{avec} \; a_k=\dfrac{1}{k(k+1)}\]</div>
+<p>avec <span class="math">\(n=10000\)</span></p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>En utilisant un algorithme qui calcule <span class="math">\(a_1\)</span> puis <span class="math">\(a_1+a_2\)</span> puis <span class="math">\(a_1+a_2+a_3\)</span> etc.</li>
+<li>En utilisant un algorithme qui calcule <span class="math">\(a_n\)</span> puis <span class="math">\(a_n+a_{n-1}\)</span> puis <span class="math">\(a_n+a_{n-1}+a_{n-2}\)</span> etc.</li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Que constatez vous?</li>
+</ol>
+<p>On peut calculer la valeur de cette <strong>série</strong> par.</p>
+<div class="math">
+\[\begin{split}\dfrac{1}{n*(n+1)}=\dfrac{A}{n}+\dfrac{B}{n+1} \Longrightarrow \left\{ \begin{array}[l]j
+  A=1\\ B=-1\end{array}\right.\end{split}\]</div>
+<p>et donc on peut ecrire la somme sous la forme:</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+\sum_{k=1}^n \dfrac{1}{k*(k+1)}&amp;=&amp; \sum_{k=1}^n \dfrac{1}{k} - \sum_{k=1}^n \dfrac{1}{(k+1)} \\
+                               &amp;=&amp;1 - \dfrac{1}{n+1}\\
+                               &amp;=&amp; \dfrac{n}{n+1}
+\end{eqnarray}\end{split}\]</div>
+<p><strong>fonctions matlab</strong></p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% script pour comparer le calcul d&#39;une série par deux méthodes</span>
+
+<span class="c">%fixer la valeur de n</span>
+<span class="n">N</span><span class="p">=</span><span class="mf">1E5</span><span class="p">;</span>
+
+<span class="c">%calcul de la somme croissante</span>
+<span class="n">s1</span><span class="p">=</span><span class="mf">0.0</span><span class="p">;</span>
+<span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">N</span>
+    <span class="n">s1</span><span class="p">=</span><span class="n">s1</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="nb">i</span><span class="o">*</span><span class="p">(</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="k">end</span>
+
+<span class="c">%calcul de la somme décroissante</span>
+<span class="n">s2</span><span class="p">=</span><span class="mf">0.0</span><span class="p">;</span>
+<span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="n">N</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span>
+    <span class="n">s2</span><span class="p">=</span><span class="n">s2</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="nb">i</span><span class="o">*</span><span class="p">(</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="k">end</span>
+
+<span class="c">%calcul de la valeur exacte</span>
+<span class="n">s</span><span class="p">=</span><span class="n">N</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c">%afficher les erreurs</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;err1=%e\terr2=%e\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">s1</span><span class="o">-</span><span class="n">s</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">s2</span><span class="o">-</span><span class="n">s</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>Résultats:</p>
+<div class="highlight-python"><div class="highlight"><pre>err1=1.310063e-14       err2=1.110223e-16
+</pre></div>
+</div>
+<p>Quand on somme deux nombres on doit les mettre au même exposant( <strong>le plus grand</strong>), et donc pour éviter une <strong>cancellation des chiffres significatifs</strong> il est préférable d&#8217;éviter la somme entre deux termes de différents ordre. chose qu&#8217;on remarque pour la <strong>première somme</strong> car pour <span class="math">\(k\)</span> très grand <span class="math">\(\dfrac{1}{k*(k+1)}\)</span> devient négligeable devant <span class="math">\(S\)</span>, ce qui est évité dans la <strong>deuxième somme</strong> car on commence par les termes les plus petits. et donc  <span class="math">\(s_2\)</span> donne une <strong>meilleure</strong> approximation que  <span class="math">\(s_1\)</span>.</p>
+<hr class="docutils" />
+</div>
+<div class="section" id="exercice-7">
+<h2>Exercice 7<a class="headerlink" href="#exercice-7" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Objectif</p>
+<p>Un exemple d&#8217;instabilité numérique dans un processus de calcul itératif.</p>
+</div>
+<p>On veut calculer la valeur de l&#8217;intégrale</p>
+<div class="math">
+\[I_n=\int_{0}^{1} \dfrac{x^n}{x+10}\]</div>
+<ol class="arabic simple">
+<li>Montrer que  <span class="math">\(\forall n\; \in \mathbb{N}\)</span>, on a  <span class="math">\(I_n \in \mathbb{R}^+\)</span></li>
+<li>Trouver une relation de <strong>récurrence</strong> entre  <span class="math">\(I_n\)</span> et  <span class="math">\(I_{n-1}\)</span></li>
+<li>En utilisant <em>Matlab</em> calculer une approximation de  <span class="math">\(I_n\)</span></li>
+<li>Calculer d&#8217;une manière <em>formelle</em> une approximation de  <span class="math">\(I_n\)</span></li>
+<li>Que constatez-vous?</li>
+</ol>
+<hr class="docutils" />
+<div class="math">
+\[\forall n \in \mathbb{N}; \forall x \in [0,1] ,\quad \dfrac{x^n}{x+10}\ge 0 \Longrightarrow I_n \ge 0\]</div>
+<p>Calcul d&#8217;une relation de récurrence :</p>
+<p>Par une <strong>division euclidienne</strong> de  <span class="math">\(x^n\)</span> par  <span class="math">\(x+10\)</span> on obtient</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+x^n&amp;=&amp;x^{n-1}(x+10) -10x^{n-1}\\
+\dfrac{x^n}{x+10}&amp;=&amp;x^{n-1}-10 \dfrac{x^{n-1}}{x+10}
+\end{eqnarray}\end{split}\]</div>
+<p>donc</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+I_n&amp;=&amp;\int_{0}^1 \dfrac{x^n}{x+10}\\
+    &amp;=&amp; \int_0^1 x^{n-1} - 10 \int_0^1 \dfrac{x^{n-1}}{x+10}\\
+    &amp;=&amp; \big[\dfrac{x^n}{n} \big]_0^1 -10 I_{n-1}\\
+    &amp;=&amp; \dfrac{1}{n} -10I_{n-1}
+\end{eqnarray}\end{split}\]</div>
+<p>et  <span class="math">\(I_0=log(\dfrac{11}{10})\)</span></p>
+<p>Fonction <em>Matlab</em> pour le calcul d&#8217;une approximation de l&#8217;intégrale.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>z<span class="p">=</span><span class="nf">integraleR</span><span class="p">(</span>n<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%fonction pour calculer une approximation de l&#39;intégrale</span>
+    <span class="c">% d&#39;une manière récurrente.</span>
+    
+    <span class="c">%inialisation</span>
+    <span class="n">z</span><span class="p">=</span><span class="nb">log</span><span class="p">(</span><span class="mi">11</span><span class="o">/</span><span class="mi">10</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+        <span class="n">z</span><span class="p">=</span><span class="mi">1</span><span class="o">/</span><span class="nb">i</span> <span class="o">-</span><span class="mi">10</span><span class="o">*</span><span class="n">z</span><span class="p">;</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>script pour tester les valeurs de l&#8217;intégrale pour différents valeurs de  <span class="math">\(n\)</span></p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%script pour calculer la valeur de l&#39;intégrale pour différents</span>
+<span class="c">% valeurs de n</span>
+<span class="n">nmax</span><span class="p">=</span><span class="mi">29</span>
+<span class="c">%vecteur des n</span>
+<span class="n">N</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">nmax</span><span class="p">;</span>
+
+<span class="c">%vecteur des intégrales</span>
+<span class="n">Int</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="n">nmax</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c">%remplire le vecteur des intégrales</span>
+<span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">nmax</span>
+    <span class="n">Int</span><span class="p">(</span><span class="nb">i</span><span class="p">)=</span><span class="n">integraleR</span><span class="p">(</span><span class="nb">i</span><span class="p">);</span>
+<span class="k">end</span>
+
+<span class="c">%figure des valeurs de l&#39;ordre l&#39;integrale</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="nb">log</span><span class="p">(</span><span class="n">Int</span><span class="p">),</span><span class="s">&#39;b*&#39;</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;N&#39;</span><span class="p">);</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;log(int)&#39;</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;Ordre de la valeur de lintegrale&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Calcul d&#8217;une expression de la valeur de  <span class="math">\(I_n\)</span> en utilisant la relation de récurrence.</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+     I_n&amp;=&amp;\dfrac{1}{n}-10I_{n-1}\\
+        &amp;=&amp;\dfrac{1}{n}-10I_{n-1}+10^2I_{n-2}\\
+        &amp;=&amp;\dfrac{1}{n}-\dfrac{10}{n-1} +\dfrac{10^2}{n-2} -10^3I_{n-3}\\
+        &amp;=&amp;\sum_{k=0}^{n-1} (-1)^{(n-k)}\dfrac{10^k}{n-k}+ (-1)^s\;10^nlog(\dfrac{11}{10})
+\end{eqnarray}\end{split}\]</div>
+<p>où la valeur de  <span class="math">\(s\)</span> dépend de la <em>parité</em> de n.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">La valeur de  <span class="math">\(log(\dfrac{11}{10})\)</span> n&#8217;est pas correctement représentée dans la machine et contient un erreur de représentation en <strong>double précision</strong>, et dans le processus itératif cette erreur est multiplié par  <span class="math">\((-1)^s 10^n\)</span>,  et donc naturellement quand  <span class="math">\(n\)</span> devient grand on remarque que  <span class="math">\(I_n\)</span> explose et tend vers  <span class="math">\(\pm \infty\)</span></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction aux méthodes numériques</a><ul>
+<li><a class="reference internal" href="#exercice-1">Exercice 1</a></li>
+<li><a class="reference internal" href="#exercice-2">Exercice 2</a></li>
+<li><a class="reference internal" href="#exercice-3">Exercice 3</a></li>
+<li><a class="reference internal" href="#exercice-4">Exercice 4</a></li>
+<li><a class="reference internal" href="#exercice-5">Exercice 5</a></li>
+<li><a class="reference internal" href="#exercice-6">Exercice 6</a></li>
+<li><a class="reference internal" href="#exercice-7">Exercice 7</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="matlab.html"
+                        title="previous chapter">Simple introduction à Matlab</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/introduction_methodes_numeriques.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="matlab.html" title="Simple introduction à Matlab"
+             >previous</a> |</li>
+        <li><a href="index.html">Méthodes numériques 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, ENSAM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
