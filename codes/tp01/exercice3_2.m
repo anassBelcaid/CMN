@@ -29,9 +29,21 @@ end
 
 %% Ajouter les elements négatifs
 F=[-F;F];
+%On peut trier -F avant la concateneration par
+% 1 methode par une methode de tri
+% Y1=sort(-F)
+
+%2 method par un jeu d'indice
+%Y1=-F[end:-1:1]
+
+%3 methode methode predefinie flip left right
+%Y1=fliplr(-F)
+
 
 % Mettre F en ordre
 F=sort(F);
+
+
 
 %% Représentation graphique
 %vector of colors
