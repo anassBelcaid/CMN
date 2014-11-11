@@ -25,6 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="Méthodes numériques 0.0.1 documentation" href="index.html" />
+    <link rel="next" title="Résolution numériques des équations différentielles" href="equations_derivee_ordinaires.html" />
     <link rel="prev" title="Simple introduction à Matlab" href="matlab.html" /> 
   </head>
   <body>
@@ -34,6 +35,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="equations_derivee_ordinaires.html" title="Résolution numériques des équations différentielles"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="matlab.html" title="Simple introduction à Matlab"
              accesskey="P">previous</a> |</li>
@@ -389,9 +393,21 @@ card(\mathcal{F})&amp;=&amp;card([-1,1])*card([\beta^{t-1},\beta^{t}-1])*card([L
 
 <span class="c">%% Ajouter les elements négatifs</span>
 <span class="n">F</span><span class="p">=[</span><span class="o">-</span><span class="n">F</span><span class="p">;</span><span class="n">F</span><span class="p">];</span>
+<span class="c">%On peut trier -F avant la concateneration par</span>
+<span class="c">% 1 methode par une methode de tri</span>
+<span class="c">% Y1=sort(-F)</span>
+
+<span class="c">%2 method par un jeu d&#39;indice</span>
+<span class="c">%Y1=-F[end:-1:1]</span>
+
+<span class="c">%3 methode methode predefinie flip left right</span>
+<span class="c">%Y1=fliplr(-F)</span>
+
 
 <span class="c">% Mettre F en ordre</span>
 <span class="n">F</span><span class="p">=</span><span class="n">sort</span><span class="p">(</span><span class="n">F</span><span class="p">);</span>
+
+
 
 <span class="c">%% Représentation graphique</span>
 <span class="c">%vector of colors</span>
@@ -553,8 +569,8 @@ b=0.09\;10^1\\\end{split}\]\[\Longrightarrow a-b=0.01\; 10^1=0.1\]</div>
 <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;f(r1)=%e\t f(r2)=%e\n&#39;</span><span class="p">,</span><span class="n">fr1</span><span class="p">,</span><span class="n">fr2</span><span class="p">)</span>
 </pre></div>
 </div>
-<hr class="docutils" />
 </div>
+<hr class="docutils" />
 <div class="section" id="exercice-6">
 <h2>Exercice 6<a class="headerlink" href="#exercice-6" title="Permalink to this headline">¶</a></h2>
 <div class="topic">
@@ -617,8 +633,8 @@ b=0.09\;10^1\\\end{split}\]\[\Longrightarrow a-b=0.01\; 10^1=0.1\]</div>
 </pre></div>
 </div>
 <p>Quand on somme deux nombres on doit les mettre au même exposant( <strong>le plus grand</strong>), et donc pour éviter une <strong>cancellation des chiffres significatifs</strong> il est préférable d&#8217;éviter la somme entre deux termes de différents ordre. chose qu&#8217;on remarque pour la <strong>première somme</strong> car pour <span class="math">\(k\)</span> très grand <span class="math">\(\dfrac{1}{k*(k+1)}\)</span> devient négligeable devant <span class="math">\(S\)</span>, ce qui est évité dans la <strong>deuxième somme</strong> car on commence par les termes les plus petits. et donc  <span class="math">\(s_2\)</span> donne une <strong>meilleure</strong> approximation que  <span class="math">\(s_1\)</span>.</p>
-<hr class="docutils" />
 </div>
+<hr class="docutils" />
 <div class="section" id="exercice-7">
 <h2>Exercice 7<a class="headerlink" href="#exercice-7" title="Permalink to this headline">¶</a></h2>
 <div class="topic">
@@ -728,6 +744,9 @@ I_n&amp;=&amp;\int_{0}^1 \dfrac{x^n}{x+10}\\
   <h4>Previous topic</h4>
   <p class="topless"><a href="matlab.html"
                         title="previous chapter">Simple introduction à Matlab</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="equations_derivee_ordinaires.html"
+                        title="next chapter">Résolution numériques des équations différentielles</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/introduction_methodes_numeriques.txt"
@@ -756,6 +775,9 @@ I_n&amp;=&amp;\int_{0}^1 \dfrac{x^n}{x+10}\\
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="equations_derivee_ordinaires.html" title="Résolution numériques des équations différentielles"
+             >next</a> |</li>
         <li class="right" >
           <a href="matlab.html" title="Simple introduction à Matlab"
              >previous</a> |</li>

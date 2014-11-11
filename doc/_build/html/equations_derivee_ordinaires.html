@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Résolution numériques des équations différentielles &mdash; Méthodes numériques 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Méthodes numériques 0.0.1 documentation" href="index.html" />
+    <link rel="prev" title="Introduction aux méthodes numériques" href="introduction_methodes_numeriques.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="introduction_methodes_numeriques.html" title="Introduction aux méthodes numériques"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Méthodes numériques 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="resolution-numeriques-des-equations-differentielles">
+<span id="equations-derivee-ordinaire"></span><h1>Résolution numériques des équations différentielles<a class="headerlink" href="#resolution-numeriques-des-equations-differentielles" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="exercice-1">
+<h2>Exercice 1<a class="headerlink" href="#exercice-1" title="Permalink to this headline">¶</a></h2>
+<p>On considère un milieu confiné dans lequel vivent des bactéries. <span class="math">\(y(t)\)</span> le nombre des bactéries. On suppose qu&#8217;au plus <span class="math">\(b\)</span> éléments <strong>coexistent</strong> et que le nombre <strong>initial</strong> est <span class="math">\(a\)</span>. Le <strong>taux de croissance</strong> des bactéries étant égal à <span class="math">\(c\)</span>, le taux de variation de cette population satisfait l&#8217;équation:</p>
+<div class="math">
+\[\begin{equation}
+y^{'}(t)-cy(t)+\dfrac{c}{b}y(t)^2=0
+\end{equation}\]</div>
+<ol class="arabic simple">
+<li>Ecrire le problème de <strong>Cauchy</strong>, qui sera noté <span class="math">\((P_1)\)</span>.</li>
+</ol>
+<p>On peut écrire le problème sous la forme:</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+y^{'}(t)&amp;=&amp;cy(t)-\dfrac{c}{b}y(t)^2
+        &amp;=&amp;F(t,y)
+\end{eqnarray}\end{split}\]</div>
+<p>avec <span class="math">\(F(t,y)=cy(t)-\dfrac{c}{b}y(t)^2\)</span> est la fonction de <strong>Cauchy</strong>.</p>
+<p>Ce qui donne:</p>
+<div class="math">
+\[\begin{split}P_1=\left\{
+     \begin{array}{l}
+     y^{'}(t)=F(t,y) \quad \forall t \in [0,\infty[\\
+     y(0)=a
+     \end{array}
+   \right.\end{split}\]</div>
+<ol class="arabic simple" start="2">
+<li>Vérifier que le problème admet une solution <strong>unique</strong>.</li>
+</ol>
+<p>Pour que le problème admet une solution unique, il <strong>suffit</strong> que la fonction de <em>Cauchy</em> <span class="math">\(\mathbf{F}\)</span> soit <strong>localement lipchitzienne</strong> par rapport à <span class="math">\(y\)</span>.</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+  \dfrac{\delta F(t,y)}{\delta y}&amp;=&amp;c- 2\dfrac{c}{b} y(t)
+\end{eqnarray}\end{split}\]</div>
+<p>Puisque <span class="math">\(|F(t,y)|&lt;b\)</span> on conclut que:</p>
+<div class="math">
+\[\begin{split}|F(t,y)|&lt;|c -2c|&lt;3c\end{split}\]</div>
+<p>donc le problème <span class="math">\((P_1)\)</span> admet une solution unique.</p>
+<ol class="arabic simple" start="3">
+<li>Calculer la solution analytique?</li>
+</ol>
+<p>Le problème <span class="math">\((P_1)\)</span> est une équation différentielle de type <strong>Bernoulli</strong>, qui a pour une forme générale.</p>
+<div class="math">
+\[\dfrac{dy}{dx}=P(x)y(t)+Q(x)y^n\]</div>
+<p>Et qui sont résolus en posant le <strong>changement de variable</strong> suivant:</p>
+<div class="math">
+\[Z=Y^{(1-n)}\]</div>
+<p>en disivant l&#8217;équation sur <span class="math">\(y^n\)</span> on obtient:</p>
+<div class="math">
+\[\dfrac{y^{'}}{y^n}=P(x)y^{1-n}+Q(x)\]</div>
+<p>Si on écrit l&#8217;equation en fonction <span class="math">\(Z\)</span> on obtient:</p>
+<div class="math">
+\[\begin{equation}
+\big(\dfrac{1}{1-n}\big)z^{'}=P(x)z+Q(x)
+\end{equation}\]</div>
+<p>Qui est un problème différentiel <strong>linéaire</strong> simple à résoudre.</p>
+<hr class="docutils" />
+<p><strong>Application</strong></p>
+<p>on pose <span class="math">\(z=\dfrac{1}{y}\)</span> et on obtient</p>
+<div class="math">
+\[z^{'}(t)=-cz(t)+\dfrac{c}{b}\]</div>
+<ul class="simple">
+<li>Solution homogène:</li>
+</ul>
+<div class="math">
+\[\begin{equation}
+  z_1(t)=C_1\mathbf{e}^{-ct}
+\end{equation}\]</div>
+<ul class="simple">
+<li>solution particulière:</li>
+</ul>
+<div class="math">
+\[z_2(t)=\dfrac{1}{b}\]</div>
+<ul class="simple">
+<li>solution finale:</li>
+</ul>
+<div class="math">
+\[z(t)=z_1(t)+z_2(t)=C_1\mathbf{e}^{-ct}+\dfrac{1}{b}\]</div>
+<p>Ce qui donne</p>
+<div class="math">
+\[y(t)=\dfrac{1}{C_1\mathbf{e}^{-ct}+\dfrac{1}{b}}\]</div>
+<p>On determine la constante <span class="math">\(C_1\)</span> par la <strong>condition initiale</strong></p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+y(0)&amp;=&amp;a\\
+C_1&amp;=&amp;\dfrac{b-a}{ab}
+\end{eqnarray}\end{split}\]</div>
+<p>et donc</p>
+<div class="math">
+\[y(t)=\dfrac{1}{\dfrac{b-a}{ab}e^{-ct}+\dfrac{1}{b}}\]</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="4">
+<li>Utiliser la méthode <em>d&#8217;Euler</em> pour obtenir successivement des approximations de <span class="math">\(y(0.1)\)</span>, <span class="math">\(y(0.2)\)</span>,:math:<cite>ldots</cite>, <span class="math">\(y(1.0)\)</span> notées <span class="math">\(y_1,y_2,y_3,\ldots,y_{10}\)</span> dans le cas <span class="math">\(c=1,\; b=2,\; a=10\)</span>.</li>
+</ol>
+<p><strong>Fonction de Cauchy</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>z<span class="p">=</span><span class="nf">fCauchy</span><span class="p">(</span>t,y<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%fonction de cauchy </span>
+    <span class="c">%On peut déclarer a,b et c dans la fonction comme </span>
+    <span class="c">%on peut les considérer comme variables globales</span>
+    <span class="n">b</span><span class="p">=</span><span class="mi">2</span><span class="p">;</span>
+    <span class="n">c</span><span class="p">=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">z</span><span class="p">=</span><span class="n">c</span><span class="o">*</span><span class="n">y</span><span class="o">-</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p><strong>Fonction exacte</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>z<span class="p">=</span><span class="nf">fExacte</span><span class="p">(</span>t<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%fonction exacte du probleme</span>
+    
+    <span class="n">a</span><span class="p">=</span><span class="mi">10</span><span class="p">;</span>
+    <span class="n">b</span><span class="p">=</span><span class="mi">2</span><span class="p">;</span>
+    <span class="n">c</span><span class="p">=</span><span class="mi">1</span><span class="p">;</span>
+    
+    <span class="n">z</span><span class="p">=</span><span class="mf">1.</span><span class="o">/</span><span class="p">((</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="n">b</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p>.
+<strong>Méthode Euler Explicite</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[X,Y]<span class="p">=</span><span class="nf">euler_explicite</span><span class="p">(</span>f,a,b,y0,h<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%Résoudre le probleme de Cauchy en utilisant</span>
+    <span class="c">%Euler explicite</span>
+    <span class="c">% Entrées:</span>
+    <span class="c">%  f  : hande de la fonction</span>
+    <span class="c">% a,b : intervalle de résolution</span>
+    <span class="c">% y0  : condition initiale</span>
+    <span class="c">%  h  : pas de la descritisation</span>
+    
+    <span class="c">%Sorties</span>
+    <span class="c">% X  : descritisation de l&#39;intervalle</span>
+    <span class="c">% Y  : approximation de Y en X</span>
+    
+    <span class="c">%descritisation</span>
+    <span class="n">X</span><span class="p">=</span><span class="n">a</span><span class="p">:</span><span class="n">h</span><span class="p">:</span><span class="n">b</span><span class="p">;</span>
+    
+    <span class="c">%longeur de X</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+    <span class="n">Y</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+    
+    <span class="c">%Initialisation</span>
+    <span class="n">X</span><span class="p">(</span><span class="mi">1</span><span class="p">)=</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">Y</span><span class="p">(</span><span class="mi">1</span><span class="p">)=</span><span class="n">y0</span><span class="p">;</span>
+    
+    <span class="c">%boucle principale</span>
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span>
+        <span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="p">)=</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p><strong>Script principal de résolution</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">%% script pour résoure une équation aux derivées ordinaires</span>
+
+<span class="c">%constantes</span>
+<span class="n">a</span><span class="p">=</span><span class="mi">10</span><span class="p">;</span>
+<span class="n">b</span><span class="p">=</span><span class="mi">2</span><span class="p">;</span>
+<span class="n">c</span><span class="p">=</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="c">%resolution par la méthode Euler</span>
+<span class="hll"><span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">]=</span><span class="n">euler_explicite</span><span class="p">(@</span><span class="n">fCauchy</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mf">0.1</span><span class="p">);</span>
+</span>
+<span class="c">%calculer la fonction exacte</span>
+<span class="n">E</span><span class="p">=</span><span class="n">fExacte</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+
+<span class="c">%representation graphique</span>
+<span class="n">hold</span> <span class="n">on</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="s">&#39;r*-&#39;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">E</span><span class="p">,</span><span class="s">&#39;b-&#39;</span><span class="p">)</span>
+<span class="n">legend</span><span class="p">(</span><span class="s">&#39;euler&#39;</span><span class="p">,</span><span class="s">&#39;exacte&#39;</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;resolutin dune ode par la methode euler&#39;</span><span class="p">)</span>
+
+<span class="c">%representer l&#39;écart enter la solution analytique et numerique</span>
+<span class="n">figure</span><span class="p">()</span>
+<span class="n">errorbar</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">E</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">Y</span><span class="p">))</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;representation des ecarts&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Résolution numériques des équations différentielles</a><ul>
+<li><a class="reference internal" href="#exercice-1">Exercice 1</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction_methodes_numeriques.html"
+                        title="previous chapter">Introduction aux méthodes numériques</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/equations_derivee_ordinaires.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="introduction_methodes_numeriques.html" title="Introduction aux méthodes numériques"
+             >previous</a> |</li>
+        <li><a href="index.html">Méthodes numériques 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, ENSAM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

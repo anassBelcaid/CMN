@@ -13,6 +13,7 @@ Contents:
 
    matlab
    introduction_methodes_numeriques
+   equations_derivee_ordinaires
 
 
 Indices et Tables
