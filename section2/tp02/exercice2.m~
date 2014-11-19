@@ -1,0 +1,23 @@
+% script pour résoudre le deuxième exercice
+
+%données du problème
+a=0.05;
+h=0.1;
+y0=exp(-a*(pi^2/4));
+
+%calcul des valeurs d'Euler
+[T,Y]=euler_explicite(@fCauchy2,pi/2,10,h,y0);
+
+%calcul des appro
+
+%calcul des valeurs exactes
+E=fExacte2(T);
+
+%representation graphique
+hold on
+id=plot(T,Y,'b*')
+plot(T,E,'r--','lineWidth',2)
+legend('Euler','Exacte')
+title('comparaison des methodes','fontSize',18)
+saveas(id,'graphe.pdf')
+
