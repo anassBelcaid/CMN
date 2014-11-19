@@ -179,8 +179,7 @@ C_1&amp;=&amp;\dfrac{b-a}{ab}
 <span class="k">end</span>
 </pre></div>
 </td></tr></table></div>
-<p>.
-<strong>Méthode Euler Explicite</strong></p>
+<p><strong>Méthode Euler Explicite</strong></p>
 <div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -290,6 +289,339 @@ C_1&amp;=&amp;\dfrac{b-a}{ab}
 <span class="n">title</span><span class="p">(</span><span class="s">&#39;representation des ecarts&#39;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">dans la ligne <strong>9</strong>, l&#8217;opérateur <strong>&#64;</strong> est utilisé pour obtenir une <strong>référence</strong> à la fonction <em>FCauchy</em>.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="exercice-2">
+<h2>Exercice 2<a class="headerlink" href="#exercice-2" title="Permalink to this headline">¶</a></h2>
+<p>On considère le problème de <strong>Cauchy</strong> suivant:</p>
+<div class="math">
+\[\begin{split}\begin{equation}
+  (P_1)=\left\{\begin{array}[lr]
+                    a y^{'}=(cot(t)-2at)y(t) &amp; x \in [0,10]\\
+                    y(\dfrac{\pi}{2})=exp(-a\dfrac{\pi^2}{4})&amp;
+                \end{array}\right.
+\end{equation}\end{split}\]</div>
+<p>avec <span class="math">\(a=0.05\)</span></p>
+<ol class="arabic simple">
+<li>Vérifier que <span class="math">\(y(t)=sin(t)e^{-at^2}\)</span> est une solution du prolbème <span class="math">\((P_1)\)</span>.</li>
+</ol>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+ y^{'}(t)&amp;=&amp;cos(t)e^{-at^2} -2at\;sin(t)e^{-at^2}\\
+         &amp;=&amp;\big(\dfrac{cos(t)}{sin(t)}- 2at \big)e^{-2t^2}\\
+         &amp;=&amp;\big(\mathbf{cot}(t)-2at \big) e^{-2t^2}
+\end{eqnarray}\end{split}\]</div>
+<p>et on vérifie facilement que <span class="math">\(y(\dfrac{\pi}{2})=exp(-a\dfrac{\pi^2}{4})\)</span>.</p>
+<ol class="arabic simple" start="2">
+<li>Résoudre le problème en utilisant la méthode <strong>D&#8217;Euler</strong></li>
+</ol>
+<p><strong>fonction de Cauchy</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>z<span class="p">=</span><span class="nf">fCauchy2</span><span class="p">(</span>t,y<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">% fonction de cauchy du deuxieme probleme</span>
+    <span class="n">a</span><span class="p">=</span><span class="mf">0.05</span><span class="p">;</span>
+    <span class="n">z</span><span class="p">=(</span><span class="nb">cot</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p><strong>Fonction exacte</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>z<span class="p">=</span><span class="nf">fExacte2</span><span class="p">(</span>t<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">% fonction exacte du deuxieme probleme</span>
+    <span class="n">a</span><span class="p">=</span><span class="mf">0.05</span><span class="p">;</span>
+    <span class="n">z</span><span class="p">=</span><span class="nb">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="o">*</span><span class="n">t</span><span class="o">.^</span><span class="mi">2</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p><strong>Script principale</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">%script pour résoudre le problème 2 de la série</span>
+
+<span class="c">%résoudre en utilisant Euler</span>
+<span class="n">a</span><span class="p">=</span><span class="mf">0.05</span><span class="p">;</span>
+<span class="n">y0</span><span class="p">=</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="nb">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>^<span class="mi">2</span><span class="p">);</span>
+<span class="n">h</span><span class="p">=</span><span class="mf">0.1</span><span class="p">;</span>
+
+
+<span class="c">%Euler explicite</span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">]=</span><span class="n">euler_explicite</span><span class="p">(@</span><span class="n">fCauchy2</span><span class="p">,</span><span class="nb">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">h</span><span class="p">);</span>
+
+<span class="c">%Heun</span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="n">H</span><span class="p">]=</span><span class="n">Heun</span><span class="p">(@</span><span class="n">fCauchy2</span><span class="p">,</span><span class="nb">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">h</span><span class="p">);</span>
+
+<span class="c">%runge Kutta</span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="n">R</span><span class="p">]=</span><span class="n">rungeKutta</span><span class="p">(@</span><span class="n">fCauchy2</span><span class="p">,</span><span class="nb">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">h</span><span class="p">);</span>
+
+<span class="c">%obtenir la méthode exacte</span>
+<span class="n">E</span><span class="p">=</span><span class="n">fExacte2</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+
+
+<span class="c">%representation graphique</span>
+<span class="n">hold</span> <span class="n">on</span>
+<span class="n">h</span><span class="p">=</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="s">&#39;b*&#39;</span><span class="p">);</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">E</span><span class="p">,</span><span class="s">&#39;r-&#39;</span><span class="p">,</span><span class="s">&#39;lineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="s">&#39;k^&#39;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="s">&#39;m--&#39;</span><span class="p">)</span>
+<span class="n">legend</span><span class="p">(</span><span class="s">&#39;Euler&#39;</span><span class="p">,</span><span class="s">&#39;Exacte&#39;</span><span class="p">,</span><span class="s">&#39;Heun&#39;</span><span class="p">,</span><span class="s">&#39;rungeKutta&#39;</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">);</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;y(t)&#39;</span><span class="p">);</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;Comparaison des methode ODE&#39;</span><span class="p">,</span><span class="s">&#39;fontSize&#39;</span><span class="p">,</span><span class="mi">18</span><span class="p">)</span>
+
+<span class="c">%sauvegarde du graphique</span>
+<span class="n">saveas</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="s">&#39;methods.png&#39;</span><span class="p">)</span>
+
+
+<span class="c">%ouverture du fichier pour la sauvegarde</span>
+
+<span class="n">fid</span><span class="p">=</span><span class="n">fopen</span><span class="p">(</span><span class="s">&#39;erreurs.txt&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">);</span>
+<span class="c">%calculer la longeur </span>
+<span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="nb">i</span> <span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span><span class="s">&#39;%f\t%f\t%f\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">Y</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">H</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">R</span><span class="p">))</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<ol class="arabic simple" start="3">
+<li>Résoudre le problème <span class="math">\((P_1)\)</span> en utilisant la méthode de <strong>Heun</strong> et tracer la solution numérique.</li>
+</ol>
+<p>le schéma de la méthode de <strong>Heun</strong> est le suivant:</p>
+<div class="math">
+\[\begin{split}\left\{ \begin{array}[l]
+   a\tilde{y}_{i+1}=y_i+hf(t_i,y_i)\\
+   y_{i+1}=y_i +\dfrac{h}{2}\big(f(t_i,y_i)+f(t_{i+1},\tilde{y}_{i+1})\big)
+         \end{array} \right.\end{split}\]</div>
+<p><strong>Fonction de Heun</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[X,Y]<span class="p">=</span><span class="nf">Heun</span><span class="p">(</span>f,a,b,y0,h<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%Résoudre le probleme de Cauchy en utilisant</span>
+    <span class="c">% la méthode de Heun</span>
+    <span class="c">% Entrées:</span>
+    <span class="c">%  f  : hande de la fonction</span>
+    <span class="c">% a,b : intervalle de résolution</span>
+    <span class="c">% y0  : condition initiale</span>
+    <span class="c">%  h  : pas de la descritisation</span>
+    
+    <span class="c">%Sorties</span>
+    <span class="c">% X  : descritisation de l&#39;intervalle</span>
+    <span class="c">% Y  : approximation de Y en X</span>
+    
+    <span class="c">%descritisation</span>
+    <span class="n">X</span><span class="p">=</span><span class="n">a</span><span class="p">:</span><span class="n">h</span><span class="p">:</span><span class="n">b</span><span class="p">;</span>
+    
+    <span class="c">%longeur de X</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+    <span class="n">Y</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+    
+    <span class="c">%Initialisation</span>
+    <span class="n">X</span><span class="p">(</span><span class="mi">1</span><span class="p">)=</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">Y</span><span class="p">(</span><span class="mi">1</span><span class="p">)=</span><span class="n">y0</span><span class="p">;</span>
+    
+    <span class="c">%boucle principale</span>
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span>
+        <span class="c">%valeur de prédiction en utilisant Euler_exp</span>
+        <span class="n">z</span><span class="p">=</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+        
+        <span class="c">%correction</span>
+        <span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="p">)=</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">+</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">z</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<ol class="arabic simple" start="4">
+<li>Résoudre le problème <span class="math">\((P_1)\)</span> en utilisant la méthode de <strong>Runge Kutta</strong> d&#8217;ordre <em>4</em> et tracer la solution numérique.</li>
+</ol>
+<p>la méthode de <strong>Runge-kutta</strong> est définie par:</p>
+<div class="math">
+\[\begin{equation}
+  y_{n+1}=y_n+ \dfrac{h}{6}(k_1+2k_2+2k_2+k_4)
+\end{equation}\]</div>
+<p>avec:</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+k_1&amp;=&amp;f(t_n,y_n)\\
+k_2&amp;=&amp;f(t_n+\dfrac{h}{2},y_n+\dfrac{1}{2}k_1h)\\
+k_2&amp;=&amp;f(t_n+\dfrac{h}{2},y_n+\dfrac{1}{2}k_2h)\\
+k_4&amp;=&amp;f(t_n+h,y_n+k_3h)
+\end{eqnarray}\end{split}\]</div>
+<p><strong>Fonction Runge Kutta</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[X,Y]<span class="p">=</span><span class="nf">rungeKutta</span><span class="p">(</span>f,a,b,y0,h<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%Résoudre le probleme de Cauchy en utilisant</span>
+    <span class="c">% la méthode de runge Kutta</span>
+    <span class="c">% Entrées:</span>
+    <span class="c">%  f  : hande de la fonction</span>
+    <span class="c">% a,b : intervalle de résolution</span>
+    <span class="c">% y0  : condition initiale</span>
+    <span class="c">%  h  : pas de la descritisation</span>
+    
+    <span class="c">%Sorties</span>
+    <span class="c">% X  : descritisation de l&#39;intervalle</span>
+    <span class="c">% Y  : approximation de Y en X</span>
+    
+    <span class="c">%descritisation</span>
+    <span class="n">X</span><span class="p">=</span><span class="n">a</span><span class="p">:</span><span class="n">h</span><span class="p">:</span><span class="n">b</span><span class="p">;</span>
+    
+    <span class="c">%longeur de X</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+    <span class="n">Y</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+    
+    <span class="c">%Initialisation</span>
+    <span class="n">X</span><span class="p">(</span><span class="mi">1</span><span class="p">)=</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">Y</span><span class="p">(</span><span class="mi">1</span><span class="p">)=</span><span class="n">y0</span><span class="p">;</span>
+    
+    <span class="c">%boucle principale</span>
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span>
+       <span class="c">%calcul des constantes de Rk4</span>
+       <span class="n">k1</span><span class="p">=</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+       <span class="n">k2</span><span class="p">=</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">k1</span><span class="o">*</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+       <span class="n">k3</span><span class="p">=</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">k2</span><span class="o">*</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+       <span class="n">k4</span><span class="p">=</span><span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">k3</span><span class="o">*</span><span class="n">h</span><span class="p">);</span>
+       
+       <span class="c">%formule de RK4</span>
+       <span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="p">)=</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">*</span><span class="p">(</span><span class="n">k1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">k2</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">k3</span><span class="o">+</span><span class="n">k4</span><span class="p">)</span><span class="o">/</span><span class="mi">6</span><span class="p">;</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<ol class="arabic simple" start="5">
+<li>Afficher les <strong>erreurs</strong> de discrétistaion locale des méthodes ci-dessus:</li>
+</ol>
+<p>pour pouvoir construire un tel <strong>fichier</strong> on aura besoin d&#8217;une fonction <strong>matlab</strong> pour écrire dans un fichier.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="n">fileId</span><span class="p">=</span><span class="n">fopen</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="s">&#39;permission&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>et après utiliser la fonction <strong>fprintf</strong> pour sauvegarder les valeurs.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="n">fprintf</span><span class="p">(</span><span class="n">fileId</span><span class="p">,</span><span class="s">&#39;code&#39;</span><span class="p">,</span><span class="n">valeurs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>donc pour construire le fichier.</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="n">fid</span><span class="p">=</span><span class="n">fopen</span><span class="p">(</span><span class="s">&#39;erreurs.txt&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">);</span>
+<span class="n">fid</span><span class="p">=</span><span class="n">fopen</span><span class="p">(</span><span class="s">&#39;erreurs.txt&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">);</span>
+<span class="c">%calculer la longeur</span>
+<span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="nb">i</span> <span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span><span class="s">&#39;%f\t%f\t%f\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">Y</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">H</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">R</span><span class="p">))</span>
+<span class="k">end</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -303,6 +635,7 @@ C_1&amp;=&amp;\dfrac{b-a}{ab}
   <ul>
 <li><a class="reference internal" href="#">Résolution numériques des équations différentielles</a><ul>
 <li><a class="reference internal" href="#exercice-1">Exercice 1</a></li>
+<li><a class="reference internal" href="#exercice-2">Exercice 2</a></li>
 </ul>
 </li>
 </ul>
