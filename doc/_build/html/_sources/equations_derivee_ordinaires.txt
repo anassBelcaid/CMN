@@ -303,11 +303,16 @@ donc pour construire le fichier.
 .. code-block:: matlab
 
     fid=fopen('erreurs.txt','w');
-    fid=fopen('erreurs.txt','w');
     %calculer la longeur
     n=length(X);
 
+    %calcul des erreurs
+    Err_e=abs(E-Y)
+    Err_h=abs(E-H)
+    Err_r=abs(E-R)
+
+    %boucle pour remplir le fichier
     for i =1:n
-        fprintf(fid,'%f\t%f\t%f\n',abs(E-Y),abs(E-H),abs(E-R))
+        fprintf(fid,'%f\t%f\t%f\n',Err_e(i),Err_h(i),Err_r(i))
     end
 

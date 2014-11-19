@@ -1,6 +1,0 @@
-function z=fExacte2(t)
-
-  a=0.05;
-  
-  z=sin(t);
-end
