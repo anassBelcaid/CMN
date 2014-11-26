@@ -392,7 +392,26 @@ C_1&amp;=&amp;\dfrac{b-a}{ab}
 46
 47
 48
-49</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">%script pour résoudre le problème 2 de la série</span>
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">%script pour résoudre le problème 2 de la série</span>
 
 <span class="c">%résoudre en utilisant Euler</span>
 <span class="n">a</span><span class="p">=</span><span class="mf">0.05</span><span class="p">;</span>
@@ -433,14 +452,33 @@ C_1&amp;=&amp;\dfrac{b-a}{ab}
 <span class="c">%calculer la longeur </span>
 <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
 
+<span class="c">%calcul des erreurs</span>
+<span class="n">E_eu</span><span class="p">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">Y</span><span class="p">);</span>
+<span class="n">E_hu</span><span class="p">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">H</span><span class="p">);</span>
+<span class="n">E_rk</span><span class="p">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">R</span><span class="p">);</span>
+
 <span class="k">for</span> <span class="nb">i</span> <span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span><span class="s">&#39;%f\t%f\t%f\t%f\n&#39;</span><span class="p">,</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">Y</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">H</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">R</span><span class="p">))</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span><span class="s">&#39;%.16f\t%.16f\t%.16f\t%.16f\n&#39;</span><span class="p">,</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">E_eu</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">E_hu</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">E_rk</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span>
 <span class="k">end</span>
 
-<span class="c">%representation des erreurs</span>
+<span class="c">%sauvegarde des erreurs totales</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span><span class="s">&#39;%.16f\t%.16f\t%.16f\t%.16f\n&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">max</span><span class="p">(</span><span class="n">E_eu</span><span class="p">),</span><span class="n">max</span><span class="p">(</span><span class="n">E_hu</span><span class="p">),</span><span class="n">max</span><span class="p">(</span><span class="n">E_rk</span><span class="p">));</span>
 
+<span class="c">%fermer le fichier</span>
+<span class="n">fclose</span><span class="p">(</span><span class="n">fid</span><span class="p">);</span>
+
+<span class="c">%representation des erreurs</span>
 <span class="c">%chargement du fichier</span>
 <span class="n">Errs</span><span class="p">=</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;erreurs.txt&#39;</span><span class="p">);</span>
+
+<span class="c">%representer les erreurs</span>
+<span class="n">figure</span><span class="p">()</span>
+<span class="n">hold</span> <span class="n">on</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">Errs</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">Errs</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="s">&#39;b--&#39;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">Errs</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">Errs</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="s">&#39;r*&#39;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">Errs</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">Errs</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s">&#39;go&#39;</span><span class="p">)</span>
+<span class="n">legend</span><span class="p">(</span><span class="s">&#39;err_euler&#39;</span><span class="p">,</span><span class="s">&#39;Err_Heun&#39;</span><span class="p">,</span><span class="s">&#39;Err_RungeKutta&#39;</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;Erreurs&#39;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
 <ol class="arabic simple" start="3">
@@ -633,10 +671,288 @@ k_4&amp;=&amp;f(t_n+h,y_n+k_3h)
 
 <span class="c">%boucle pour remplir le fichier</span>
 <span class="k">for</span> <span class="nb">i</span> <span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span><span class="s">&#39;%f\t%f\t%f\n&#39;</span><span class="p">,</span><span class="n">Err_e</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">Err_h</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">Err_r</span><span class="p">(</span><span class="nb">i</span><span class="p">))</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span><span class="s">&#39;%f\t%f\t%f\t%f\n&#39;</span><span class="p">,</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">Err_e</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">Err_h</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">Err_r</span><span class="p">(</span><span class="nb">i</span><span class="p">))</span>
 <span class="k">end</span>
+
+<span class="c">%sauvegarde de l&#39;erreure absolue</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="n">fid</span><span class="p">,</span><span class="s">&#39;%f\t%f\t%f\t%f\t%f\n&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">max</span><span class="p">(</span><span class="n">Err_e</span><span class="p">),</span><span class="n">max</span><span class="p">(</span><span class="n">Err_h</span><span class="p">),</span><span class="n">max</span><span class="p">(</span><span class="n">Err_r</span><span class="p">))</span>
 </pre></div>
 </div>
+<ol class="arabic simple" start="7">
+<li>Tracer les courbes des erreurs du tableau ci_dessus. Commentez ces résultats?</li>
+</ol>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%Chargement du fichier</span>
+<span class="n">mat</span><span class="p">=</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;erreurs.txt&#39;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="c">%erreur euler</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,:),</span><span class="n">mat</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c">%erreur Heun</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,:),</span><span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c">%erreur Runge-kutta</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,:),</span><span class="n">mat</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="exercice-4">
+<h2>Exercice 4<a class="headerlink" href="#exercice-4" title="Permalink to this headline">¶</a></h2>
+<p>On considère le problème de <strong>Cauchy</strong> suivant:</p>
+<div class="math">
+\[\begin{split}(P_7)=\left\{ \begin{array}  a\frac{du}{dt}(t)=-\lambda u\quad t \in [0,50] \quad \lambda &gt;0\\ u(0)=1 \end{array}\right.\end{split}\]</div>
+<ol class="arabic simple">
+<li>Déterminer la solution <em>analytique</em> du <span class="math">\((P_7)\)</span>. Montrer que cette solution est positive et <strong>decroissante</strong> vers <span class="math">\(0\)</span>.</li>
+</ol>
+<p>La solution exacte du problème <span class="math">\((P_7)\)</span> est :</p>
+<div class="math">
+\[\begin{split}y(t)&amp;=&amp; e^{-\lambda t}\end{split}\]</div>
+<p>donc la solution <span class="math">\(y(t)\)</span> est décroissante et tend vers <span class="math">\(0\)</span>.</p>
+<ol class="arabic simple" start="2">
+<li>Résoudre le problème <span class="math">\((P_7)\)</span> en utilisant <strong>Euler explicite</strong>, sous quelle condition ce schéma est  stable?</li>
+</ol>
+<p>Si on applique le schéma d&#8217;<em>Euler explicite</em> on obitent le schéma suivant:</p>
+<div class="math">
+\[\begin{split}\left\{ \begin{array}  a y_0=1 \\ y_{n+1}=(1-\lambda h)y_n=(1-\lambda h)^{n+1}\end{array} \right.\end{split}\]</div>
+<p>donc pour que <span class="math">\(\lim_{n \to \infty }y_n=0\)</span>, <span class="math">\(h\)</span> doit vérifier:</p>
+<div class="math">
+\[\begin{split}-1&lt;1-\lambda h &lt;1 \;\;\Longrightarrow h&lt;\dfrac{2}{\lambda}\end{split}\]</div>
+<ol class="arabic simple" start="3">
+<li>Résoudre le schéma <span class="math">\((P_7)\)</span> en utilisant <em>Euler implicite</em>, Ce schéma est il stable?</li>
+</ol>
+<p>Si on applique le schéma d&#8217;<em>Euler implicite</em> on obitent le schéma suivant:</p>
+<div class="math">
+\[\begin{split}\left\{ \begin{array}  a y_0=1 \\ y_{n+1}=y_n-\lambda h y_{n+1}=\dfrac{1}{(1+\lambda h)}y^{n+1}=\big(\dfrac{1}{1+\lambda h}\big)^{(n+1)}\end{array} \right.\end{split}\]</div>
+<p>donc <span class="math">\(y_n\)</span> tend verd <span class="math">\(0\)</span> pour <strong>toutes les valeurs</strong> de <span class="math">\(h\)</span>.</p>
+<ol class="arabic simple" start="4">
+<li>Tracer la solution <em>analytique</em> et les deux solutions numériques pour les différents valeurs de <span class="math">\(h\)</span>:</li>
+</ol>
+<ul class="simple">
+<li><span class="math">\(h=\dfrac{30}{16}\)</span></li>
+<li><span class="math">\(h=\dfrac{30}{14}\)</span></li>
+<li><span class="math">\(h=2\)</span></li>
+</ul>
+<p><strong>Fonction Cauchy</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>z<span class="p">=</span><span class="nf">fCauchy7</span><span class="p">(</span>t,y<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%fonction du problème Cauchy P_7</span>
+    
+    <span class="c">%valeur de lam</span>
+    <span class="n">lam</span><span class="p">=</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    
+    <span class="n">z</span><span class="p">=</span><span class="n">lam</span><span class="o">*</span><span class="n">y</span><span class="p">;</span>
+<span class="k">return</span> 
+</pre></div>
+</td></tr></table></div>
+<p><strong>Fonction Exacte</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>z<span class="p">=</span><span class="nf">fExacte7</span><span class="p">(</span>t<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="c">%fonction exacte du probleme 7</span>
+   
+  <span class="n">lam</span><span class="p">=</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  
+  <span class="n">z</span><span class="p">=</span><span class="nb">exp</span><span class="p">(</span><span class="n">lam</span><span class="o">*</span><span class="n">t</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p>pour implementer le schéma <strong>Euler implicite</strong> il faut calculer la racine d&#8217;une fonction <strong>non linéaire</strong> <span class="math">\(\Phi(y_{i+1})\)</span>
+avec:</p>
+<div class="math">
+\[\Phi(y_{i+1})=y_{i+1}-y_i -hF(t_i,y_i)\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On peut résoudre ce problème en utilisant la fonction de matlab <strong>fsolve</strong> mais il faut décaler les variables <span class="math">\(t_i,y_i\)</span> et <span class="math">\(h\)</span> somme étant des variables <strong>globales</strong>.</p>
+</div>
+<p>On peut résdoure ce système en utilisant le schma de <strong>Newton</strong>.</p>
+<div class="math">
+\[\begin{split}\left\{ \begin{array} a y_0 \\ y_{i+1}=y_i- \dfrac{\Phi^{`}(y_i)}{\Phi(y_i)} \end{array}\right.\end{split}\]</div>
+<p><strong>Newton adaptée</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>z<span class="p">=</span><span class="nf">newton_adaptee</span><span class="p">(</span>F,tn,yn,h<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%fonction de newton adaptée au schema Euler</span>
+    
+    <span class="c">%initiation de la valeur de l&#39;erreur pour passer</span>
+    <span class="c">% le premier test</span>
+    <span class="n">err</span><span class="p">=</span><span class="mi">1</span><span class="p">;</span>
+    
+    <span class="c">%nombre d&#39;iterations</span>
+    <span class="n">iter</span><span class="p">=</span><span class="mi">0</span><span class="p">;</span>
+    
+    <span class="c">%boucle principale</span>
+    <span class="n">z1</span><span class="p">=</span><span class="n">yn</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">err</span><span class="o">&gt;</span><span class="mf">1E-2</span> <span class="o">&amp;&amp;</span> <span class="n">iter</span><span class="o">&lt;</span><span class="mf">1E3</span><span class="p">)</span>
+        <span class="c">%calcul de Phi(y)</span>
+        <span class="n">PhiY</span><span class="p">=</span><span class="n">z1</span><span class="o">-</span><span class="n">yn</span><span class="o">-</span><span class="n">h</span><span class="o">*</span><span class="n">F</span><span class="p">(</span><span class="n">tn</span><span class="p">,</span><span class="n">z1</span><span class="p">);</span>
+        
+        <span class="c">%calcul de z2 en utilisant le schéma de newton</span>
+        <span class="n">z2</span><span class="p">=</span><span class="n">z1</span><span class="o">-</span> <span class="n">PhiY</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">);</span>
+        
+        <span class="c">%calculer l&#39;erreur</span>
+        <span class="n">err</span><span class="p">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">z2</span><span class="o">-</span><span class="n">z1</span><span class="p">)</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">z1</span><span class="p">);</span>
+        
+        <span class="c">%mettre a jour z2</span>
+        <span class="n">z1</span><span class="p">=</span><span class="n">z2</span><span class="p">;</span>
+        <span class="n">iter</span><span class="p">=</span><span class="n">iter</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">end</span>
+    <span class="n">z</span><span class="p">=</span><span class="n">z2</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p><strong>Euler implicite</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[T,Y]<span class="p">=</span><span class="nf">euler_implicite</span><span class="p">(</span>F,a,b,y0,h<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="c">%fonction de résolution due problem de cauchy</span>
+  <span class="c">% par un schéma implicite</span>
+  
+  <span class="c">%descritisation</span>
+  <span class="n">T</span><span class="p">=</span><span class="n">a</span><span class="p">:</span><span class="n">h</span><span class="p">:</span><span class="n">b</span><span class="p">;</span>
+  
+  <span class="c">%initialisation</span>
+  <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
+  <span class="n">Y</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+  <span class="n">Y</span><span class="p">(</span><span class="mi">1</span><span class="p">)=</span><span class="n">y0</span><span class="p">;</span>
+  
+  <span class="c">%boucle principale</span>
+  <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span>
+      <span class="c">%resoudre le system par la fonction adaptée </span>
+      <span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="p">)=</span><span class="n">newton_adaptee</span><span class="p">(</span><span class="n">F</span><span class="p">,</span><span class="n">T</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">Y</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">h</span><span class="p">);</span>
+  <span class="k">end</span>  
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p><strong>Script principal</strong></p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">%exercice pour comparer les conditions de stabilité</span>
+<span class="c">% des methodes Euler[explicite/implicite]</span>
+
+<span class="c">%preparer l&#39;espace de travail</span>
+<span class="n">clc</span>
+<span class="n">clear</span> <span class="n">all</span>
+
+<span class="c">%données dur probleme</span>
+<span class="c">%intervalle</span>
+<span class="n">a</span><span class="p">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">b</span><span class="p">=</span><span class="mi">50</span><span class="p">;</span>
+<span class="c">%condition initiale</span>
+<span class="n">y0</span><span class="p">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="c">%valeurs du pas</span>
+<span class="n">H</span><span class="p">=[</span><span class="mi">30</span><span class="o">/</span><span class="mi">16</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">30</span><span class="o">/</span><span class="mi">14</span><span class="p">];</span>
+
+<span class="c">%boucle sur chaque pas</span>
+<span class="k">for</span> <span class="n">h</span><span class="p">=</span><span class="n">H</span>
+    <span class="c">%lancer une nouvelle figure</span>
+    <span class="n">figure</span><span class="p">()</span>
+    
+    <span class="c">%appel la methode Euler Explicite</span>
+    <span class="p">[</span><span class="n">T</span><span class="p">,</span><span class="n">Y</span><span class="p">]=</span><span class="n">euler_explicite</span><span class="p">(@</span><span class="n">fCauchy7</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">h</span><span class="p">);</span>
+    
+    <span class="c">%appel de la methode Euler implicite</span>
+    <span class="p">[</span><span class="n">T</span><span class="p">,</span><span class="n">Y1</span><span class="p">]=</span><span class="n">euler_implicite</span><span class="p">(@</span><span class="n">fCauchy7</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">h</span><span class="p">);</span>
+    
+    <span class="c">%solution Exacte</span>
+    <span class="n">E</span><span class="p">=</span><span class="n">fExacte7</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
+    
+    <span class="c">%graphe</span>
+    <span class="n">hold</span> <span class="n">on</span>
+    <span class="n">grid</span> <span class="n">on</span>
+    <span class="n">id</span><span class="p">=</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="s">&#39;b--*&#39;</span><span class="p">);</span>
+    <span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">Y1</span><span class="p">,</span><span class="s">&#39;g-o&#39;</span><span class="p">)</span>
+    <span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">E</span><span class="p">,</span><span class="s">&#39;r-&#39;</span><span class="p">);</span>
+    <span class="n">legend</span><span class="p">(</span><span class="s">&#39;Euler_expl&#39;</span><span class="p">,</span><span class="s">&#39;euler_impl&#39;</span><span class="p">,</span><span class="s">&#39;exacte&#39;</span><span class="p">)</span>
+    <span class="n">title</span><span class="p">(</span><span class="n">strcat</span><span class="p">(</span><span class="s">&#39;euler explicite pour h=&#39;</span><span class="p">,</span><span class="n">num2str</span><span class="p">(</span><span class="n">h</span><span class="p">)))</span>
+    <span class="n">saveas</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">strcat</span><span class="p">(</span><span class="s">&#39;graph lam=&#39;</span><span class="p">,</span><span class="n">num2str</span><span class="p">(</span><span class="n">h</span><span class="p">),</span><span class="s">&#39;.pdf&#39;</span><span class="p">))</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
 </div>
 </div>
 
@@ -651,6 +967,7 @@ k_4&amp;=&amp;f(t_n+h,y_n+k_3h)
 <li><a class="reference internal" href="#">Résolution numériques des équations différentielles</a><ul>
 <li><a class="reference internal" href="#exercice-1">Exercice 1</a></li>
 <li><a class="reference internal" href="#exercice-2">Exercice 2</a></li>
+<li><a class="reference internal" href="#exercice-4">Exercice 4</a></li>
 </ul>
 </li>
 </ul>

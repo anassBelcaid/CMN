@@ -39,11 +39,30 @@ fid=fopen('erreurs.txt','w');
 %calculer la longeur 
 n=length(X);
 
+%calcul des erreurs
+E_eu=abs(E-Y);
+E_hu=abs(E-H);
+E_rk=abs(E-R);
+
 for i =1:n
-    fprintf(fid,'%f\t%f\t%f\t%f\n',X(i),abs(E-Y),abs(E-H),abs(E-R))
+    fprintf(fid,'%.16f\t%.16f\t%.16f\t%.16f\n',X(i),E_eu(i),E_hu(i),E_rk(i));
 end
 
-%representation des erreurs
+%sauvegarde des erreurs totales
+fprintf(fid,'%.16f\t%.16f\t%.16f\t%.16f\n',0,max(E_eu),max(E_hu),max(E_rk));
 
+%fermer le fichier
+fclose(fid);
+
+%representation des erreurs
 %chargement du fichier
 Errs=load('erreurs.txt');
+
+%representer les erreurs
+figure()
+hold on
+plot(Errs(1:end-1,1),Errs(1:end-1,2),'b--')
+plot(Errs(1:end-1,1),Errs(1:end-1,3),'r*')
+plot(Errs(1:end-1,1),Errs(1:end-1,4),'go')
+legend('err_euler','Err_Heun','Err_RungeKutta')
+title('Erreurs')

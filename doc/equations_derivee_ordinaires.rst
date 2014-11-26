@@ -313,6 +313,140 @@ donc pour construire le fichier.
 
     %boucle pour remplir le fichier
     for i =1:n
-        fprintf(fid,'%f\t%f\t%f\n',Err_e(i),Err_h(i),Err_r(i))
+        fprintf(fid,'%f\t%f\t%f\t%f\n',X(i),Err_e(i),Err_h(i),Err_r(i))
     end
+
+    %sauvegarde de l'erreure absolue
+    fprintf(fid,'%f\t%f\t%f\t%f\t%f\n',0,max(Err_e),max(Err_h),max(Err_r))
+
+
+7. Tracer les courbes des erreurs du tableau ci_dessus. Commentez ces résultats?
+
+.. code-block:: matlab
+
+    %Chargement du fichier
+    mat=load('erreurs.txt','r')
+
+    %erreur euler
+    plot(mat(1:end-1,:),mat(2,end-1,2))
+
+    %erreur Heun
+    plot(mat(1:end-1,:),mat(3,end-1,2))
+
+    %erreur Runge-kutta
+    plot(mat(1:end-1,:),mat(4,end-1,2))
+
+======
+
+
+Exercice 4
+==========
+
+On considère le problème de **Cauchy** suivant:
+
+.. math::
+
+    (P_7)=\left\{ \begin{array}  a\frac{du}{dt}(t)=-\lambda u\quad t \in [0,50] \quad \lambda >0\\ u(0)=1 \end{array}\right.
+
+
+1. Déterminer la solution *analytique* du :math:`(P_7)`. Montrer que cette solution est positive et **decroissante** vers :math:`0`.
+
+La solution exacte du problème :math:`(P_7)` est :
+
+
+.. math::
+
+    y(t)&=& e^{-\lambda t}
+
+donc la solution :math:`y(t)` est décroissante et tend vers :math:`0`.
+
+2. Résoudre le problème :math:`(P_7)` en utilisant **Euler explicite**, sous quelle condition ce schéma est  stable?
+
+Si on applique le schéma d'*Euler explicite* on obitent le schéma suivant:
+
+.. math::
+
+    \left\{ \begin{array}  a y_0=1 \\ y_{n+1}=(1-\lambda h)y_n=(1-\lambda h)^{n+1}\end{array} \right.
+
+
+
+donc pour que :math:`\lim_{n \to \infty }y_n=0`, :math:`h` doit vérifier:
+
+.. math::
+
+    -1<1-\lambda h <1 \;\;\Longrightarrow h<\dfrac{2}{\lambda}
+
+3. Résoudre le schéma :math:`(P_7)` en utilisant *Euler implicite*, Ce schéma est il stable?
+
+
+Si on applique le schéma d'*Euler implicite* on obitent le schéma suivant:
+
+.. math::
+
+    \left\{ \begin{array}  a y_0=1 \\ y_{n+1}=y_n-\lambda h y_{n+1}=\dfrac{1}{(1+\lambda h)}y^{n+1}=\big(\dfrac{1}{1+\lambda h}\big)^{(n+1)}\end{array} \right.
+
+donc :math:`y_n` tend verd :math:`0` pour **toutes les valeurs** de :math:`h`.
+
+
+4. Tracer la solution *analytique* et les deux solutions numériques pour les différents valeurs de :math:`h`:
+
+* :math:`h=\dfrac{30}{16}`
+* :math:`h=\dfrac{30}{14}`
+* :math:`h=2`
+
+
+**Fonction Cauchy**
+
+.. literalinclude:: ../codes/tp02/fCauchy7.m
+    :language: matlab
+    :linenos:
+
+
+**Fonction Exacte**
+
+.. literalinclude:: ../codes/tp02/fExacte7.m
+    :language: matlab
+    :linenos:
+
+
+pour implementer le schéma **Euler implicite** il faut calculer la racine d'une fonction **non linéaire** :math:`\Phi(y_{i+1})`
+avec:
+
+.. math::
+
+    \Phi(y_{i+1})=y_{i+1}-y_i -hF(t_i,y_i)
+
+.. note::
+
+    On peut résoudre ce problème en utilisant la fonction de matlab **fsolve** mais il faut décaler les variables :math:`t_i,y_i` et :math:`h` somme étant des variables **globales**.
+
+
+On peut résdoure ce système en utilisant le schma de **Newton**.
+
+
+.. math::
+
+    \left\{ \begin{array} a y_0 \\ y_{i+1}=y_i- \dfrac{\Phi^{`}(y_i)}{\Phi(y_i)} \end{array}\right.
+
+
+
+**Newton adaptée**
+
+.. literalinclude:: ../codes/tp02/newton_adaptee.m
+    :language: matlab
+    :linenos:
+
+
+**Euler implicite**
+
+.. literalinclude:: ../codes/tp02/euler_implicite.m
+    :language: matlab
+    :linenos:
+
+
+**Script principal**
+
+.. literalinclude:: ../codes/tp02/exercice4.m
+    :language: matlab
+    :linenos:
 
