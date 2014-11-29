@@ -414,7 +414,8 @@ avec:
 
 .. math::
 
-    \Phi(y_{i+1})=y_{i+1}-y_i -hF(t_i,y_i)
+    \Phi(y)=y-y_i -hF(t_{i+1},y)
+
 
 .. note::
 
@@ -426,7 +427,7 @@ On peut résdoure ce système en utilisant le schma de **Newton**.
 
 .. math::
 
-    \left\{ \begin{array} a y_0 \\ y_{i+1}=y_i- \dfrac{\Phi^{`}(y_i)}{\Phi(y_i)} \end{array}\right.
+    \left\{ \begin{array} a y_0 \\ y_{i+1}=y_i- \dfrac{\Phi(y_i)}{\Phi^{'}(y_i)} \end{array}\right.
 
 
 

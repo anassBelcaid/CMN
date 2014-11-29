@@ -769,14 +769,14 @@ k_4&amp;=&amp;f(t_n+h,y_n+k_3h)
 <p>pour implementer le schéma <strong>Euler implicite</strong> il faut calculer la racine d&#8217;une fonction <strong>non linéaire</strong> <span class="math">\(\Phi(y_{i+1})\)</span>
 avec:</p>
 <div class="math">
-\[\Phi(y_{i+1})=y_{i+1}-y_i -hF(t_i,y_i)\]</div>
+\[\Phi(y)=y-y_i -hF(t_{i+1},y)\]</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">On peut résoudre ce problème en utilisant la fonction de matlab <strong>fsolve</strong> mais il faut décaler les variables <span class="math">\(t_i,y_i\)</span> et <span class="math">\(h\)</span> somme étant des variables <strong>globales</strong>.</p>
 </div>
 <p>On peut résdoure ce système en utilisant le schma de <strong>Newton</strong>.</p>
 <div class="math">
-\[\begin{split}\left\{ \begin{array} a y_0 \\ y_{i+1}=y_i- \dfrac{\Phi^{`}(y_i)}{\Phi(y_i)} \end{array}\right.\end{split}\]</div>
+\[\begin{split}\left\{ \begin{array} a y_0 \\ y_{i+1}=y_i- \dfrac{\Phi(y_i)}{\Phi^{'}(y_i)} \end{array}\right.\end{split}\]</div>
 <p><strong>Newton adaptée</strong></p>
 <div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
