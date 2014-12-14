@@ -14,6 +14,7 @@ Contents:
    matlab
    introduction_methodes_numeriques
    equations_derivee_ordinaires
+   resolution_systemes
 
 
 Indices et Tables

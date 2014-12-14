@@ -1,0 +1,456 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Résolution d’un système d’équations linéaires &mdash; Méthodes numériques 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Méthodes numériques 0.0.1 documentation" href="index.html" />
+    <link rel="prev" title="Résolution numériques des équations différentielles" href="equations_derivee_ordinaires.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="equations_derivee_ordinaires.html" title="Résolution numériques des équations différentielles"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Méthodes numériques 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="resolution-d-un-systeme-d-equations-lineaires">
+<h1>Résolution d&#8217;un système d&#8217;équations linéaires<a class="headerlink" href="#resolution-d-un-systeme-d-equations-lineaires" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="seance-1">
+<h2>Séance 1:<a class="headerlink" href="#seance-1" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Objectif</p>
+<p>En utilisant Matlab, résoudre un système d&#8217;équations linéaires par la méthode directe de décomposition <strong>LU</strong>.</p>
+</div>
+<ol class="arabic simple">
+<li>Etant donné un circuit électrique du la <strong>figure 1</strong>, on souhaite calculer les valeurs efficaces des courantes <span class="math">\(i_1\)</span>, <span class="math">\(i_2\)</span>, <span class="math">\(\ldots\)</span>, <span class="math">\(i_5\)</span>. En utilisant les lois de <a class="reference external" href="http://en.wikipedia.org/wiki/Kirchhoff%27s_circuit_laws">Kirchoff</a> , déterminer les équations qui régissent ce circuit électrique.</li>
+</ol>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/circuit.png"><img alt="image not found" src="_images/circuit.png" style="width: 808.0px; height: 330.0px;" /></a>
+<p class="caption">Figure 1: Schéma du circuit électrique.</p>
+</div>
+<ol class="arabic simple" start="2">
+<li>Ecrire ces équations sous la forme de <span class="math">\(Ax=b\)</span>.</li>
+</ol>
+<p>voici les équations, si on applique les deux lois de <strong>Kirchoff</strong>.</p>
+<p>Neoud <span class="math">\(B\)</span>.</p>
+<div class="math">
+\[i_1-i_2-i_3=0\]</div>
+<p>Noeud <span class="math">\(C\)</span>.</p>
+<div class="math">
+\[i_3-i_4-i_5=0\]</div>
+<p>Circuit fermé <span class="math">\(C_1\)</span>:</p>
+<div class="math">
+\[V-i_1(5\Omega)-i_2(5\Omega)=0\]</div>
+<p>Circuit fermé <span class="math">\(C_2\)</span>:</p>
+<div class="math">
+\[-i_3(7\Omega)-i_4(2\Omega)+i_2(5\Omega)=0\]</div>
+<p>Circuit fermé <span class="math">\(C_3\)</span>:</p>
+<div class="math">
+\[-i_5(3\Omega)+i_4(2\Omega)=0\]</div>
+<p>et donc le système est donné par:</p>
+<div class="math">
+\[\begin{split}\begin{pmatrix}
+  1 &amp; -1 &amp; -1 &amp; 0 &amp;0 \\
+  0 &amp; 0  &amp;  1 &amp; -1 &amp; -1\\
+  5 &amp; 5  &amp; 0  &amp; 0  &amp; 0 \\
+  0 &amp; 5  &amp; -7 &amp; -2 &amp; 0\\
+  0 &amp; 0 &amp;0    &amp; 2 &amp; -3\\
+\end{pmatrix}
+\;\begin{pmatrix}
+   i_1\\
+   i_2\\
+   i_3\\
+   i_4\\
+   i_5
+\end{pmatrix}=\begin{pmatrix}
+   0\\
+   0\\
+   V\\
+   0\\
+   0
+\end{pmatrix}\end{split}\]</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="3">
+<li>Pour <span class="math">\(V=10\)</span>, résoudre le système <span class="math">\(Ax=b\)</span> en utilisant l&#8217;opérateur <strong>\</strong> de <em>Matlab</em>.</li>
+</ol>
+<p><strong>Script principal</strong></p>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%fixer la valeur de V</span>
+<span class="n">V</span><span class="p">=</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="c">%matrice A</span>
+<span class="n">A</span><span class="p">=[</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="mi">5</span>  <span class="mi">5</span> <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="mi">0</span>  <span class="mi">5</span> <span class="o">-</span><span class="mi">7</span> <span class="o">-</span><span class="mi">2</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">2</span> <span class="o">-</span><span class="mi">3</span><span class="p">];</span>
+
+<span class="c">%vecteur b</span>
+<span class="n">b</span><span class="p">=[</span><span class="n">V</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="c">%résolution par l&#39;opérateur de matlab</span>
+<span class="n">x</span><span class="p">=</span><span class="n">A</span><span class="o">\</span><span class="n">b</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="4">
+<li>Ecrire une fonction qui résout un système <strong>triangulaire inférieur</strong>.</li>
+</ol>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>x<span class="p">=</span><span class="nf">rsl_tri_inf</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%% fonction pour résoudre un système inférieur Ax=b</span>
+    
+    <span class="c">%vérifier si le système est triangulaire</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+        <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">~=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">error</span><span class="p">(</span><span class="s">&#39;matrice non trigulaire inf&#39;</span><span class="p">)</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    
+    <span class="c">%vérifier si la matrice est régulière</span>
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">error</span><span class="p">(</span><span class="s">&#39;System singulier&#39;</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    
+    <span class="c">%résolution du system par l&#39;algorithme de descente</span>
+    
+    <span class="c">%initialisation</span>
+    <span class="n">x</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)=</span><span class="n">b</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span>
+<span class="hll">        <span class="n">x</span><span class="p">(</span><span class="nb">i</span><span class="p">)=(</span><span class="n">b</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="o">-</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+</span>    <span class="k">end</span>
+    
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Dans la ligne (29) , la somme <span class="math">\(\sum_{j=1}^{i-1} A_{ij}\;x_j\)</span> est formulée comme un <strong>produit scalaire</strong>.</p>
+</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="5">
+<li>Ecrire une fonction qui résout un système linéaire <strong>triangulaire supérieur</strong></li>
+</ol>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>x<span class="p">=</span><span class="nf">rsl_tri_sup</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%% fonction pour résoudre un système supérieur Ax=b</span>
+    
+    <span class="c">%vérifier si le système est triangulaire</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+        <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">~=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">error</span><span class="p">(</span><span class="s">&#39;matrice non trigulaire inf&#39;</span><span class="p">)</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    
+    <span class="c">%vérifier si la matrice est régulière</span>
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">error</span><span class="p">(</span><span class="s">&#39;System singulier&#39;</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    
+    <span class="c">%résolution du system par l&#39;algorithme de montée</span>
+    
+    <span class="c">%initialisation</span>
+    <span class="n">x</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="p">)=</span><span class="n">b</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+    
+    <span class="c">%boucle inversée</span>
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span>
+        <span class="n">x</span><span class="p">(</span><span class="nb">i</span><span class="p">)=(</span><span class="n">b</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="o">-</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">(</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">))</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+    <span class="k">end</span>
+    
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<hr class="docutils" />
+<ol class="arabic simple" start="6">
+<li>Ecrire une fonction qui résout un système linéaire <span class="math">\(Ax=b\)</span> par la méthode de <strong>LU</strong>.</li>
+</ol>
+<p class="centered">
+<strong>Algorithme LU</strong></p><p><span class="math">\(u_{1,1}=a_{1,1}\)</span></p>
+<dl class="docutils">
+<dt><strong>Pour</strong> j=2...n</dt>
+<dd><p class="first"><span class="math">\(u_{1,j}=a_{1,j}\)</span></p>
+<p class="last"><span class="math">\(l_{j,1}=\dfrac{a_{j,1}}{a_{1,1}}\)</span></p>
+</dd>
+</dl>
+<p><strong>fin</strong></p>
+<dl class="docutils">
+<dt><strong>pour</strong>  i=2..n-1</dt>
+<dd><p class="first"><span class="math">\(u_{i,i}=a_{i,i}-\sum_{k=1}^{i-1}l_{ik}u_{ki}\)</span></p>
+<dl class="docutils">
+<dt><strong>Pour</strong> j=1+1..n</dt>
+<dd><p class="first"><span class="math">\(u_{i,j}=a_{i,j}-\sum_{k=1}^{i-1}l_{ik}u_{kj}\)</span></p>
+<p class="last"><span class="math">\(u_{j,i}=\dfrac{1}{u_{i,i}}\big[ a_{j,i}-\sum_{k=1}^{i-1}l_{jk}u_{ki} \big]\)</span></p>
+</dd>
+</dl>
+<p class="last"><strong>fin</strong></p>
+</dd>
+</dl>
+<p><strong>fin</strong></p>
+<p class="centered">
+<strong>fonction decomposition</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[L,U]<span class="p">=</span><span class="nf">lu_dcm</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="c">%% fonction pour obtenir la decomposition A=LU</span>
+<span class="c">% les matrices L,U seront stockés dans A</span>
+
+    <span class="c">%calculer la taille de A</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+    <span class="n">L</span><span class="p">=</span><span class="nb">eye</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="n">U</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    
+    <span class="c">%premiere valeur de U11</span>
+    <span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="c">%premire ligne et colonne et (U,L)</span>
+    <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span>
+        <span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span>
+        <span class="n">L</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">end</span>
+    
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span>    
+        <span class="c">%calcul de A(i,i)</span>
+        <span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">-</span> <span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+        
+        <span class="c">%ieme ligne de U et colonne de L</span>
+        <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+            <span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">-</span><span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span>
+            <span class="n">L</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">i</span><span class="p">)=(</span><span class="n">A</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">-</span> <span class="n">L</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nb">i</span><span class="p">))</span><span class="o">/</span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+        
+    <span class="c">%dernier element</span>
+    <span class="n">U</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="n">L</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p class="centered">
+<strong>solve_lu</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>x<span class="p">=</span><span class="nf">solve_lu</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+<span class="c">%% fonction pour résoudre le système Ax=b avec la méthode LU</span>
+
+
+<span class="c">%decomposition LU</span>
+<span class="n">B</span><span class="p">=</span><span class="n">A</span><span class="p">;</span>
+<span class="p">[</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">]=</span><span class="n">lu_dcm</span><span class="p">(</span><span class="n">B</span><span class="p">);</span>
+
+<span class="c">%resolution du système inférieur</span>
+<span class="n">y1</span><span class="p">=</span><span class="n">rsl_tri_inf</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="c">%resolution du système supérieur</span>
+<span class="n">x</span><span class="p">=</span><span class="n">rsl_tri_sup</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">y1</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p class="centered">
+<strong>script principal (suite)</strong></p><div class="highlight-matlab"><div class="highlight"><pre><span class="c">%test de la solution avec lu_dcm</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;solution par la decomposition LU:&#39;</span><span class="p">)</span>
+<span class="n">x1</span><span class="p">=</span><span class="n">solve_lu</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Résolution d&#8217;un système d&#8217;équations linéaires</a><ul>
+<li><a class="reference internal" href="#seance-1">Séance 1:</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="equations_derivee_ordinaires.html"
+                        title="previous chapter">Résolution numériques des équations différentielles</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/resolution_systemes.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="equations_derivee_ordinaires.html" title="Résolution numériques des équations différentielles"
+             >previous</a> |</li>
+        <li><a href="index.html">Méthodes numériques 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, ENSAM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

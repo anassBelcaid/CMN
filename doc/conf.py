@@ -33,6 +33,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
 ]
+extensions.append('sphinxcontrib.texfigure')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
