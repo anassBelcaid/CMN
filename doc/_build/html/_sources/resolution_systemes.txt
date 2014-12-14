@@ -139,25 +139,22 @@ et donc le système est donné par:
 
 6. Ecrire une fonction qui résout un système linéaire :math:`Ax=b` par la méthode de **LU**.
 
-.. centered:: Algorithme LU
 
-:math:`u_{1,1}=a_{1,1}`
+**Algorithme LU**::
 
-**Pour** j=2...n
-    :math:`u_{1,j}=a_{1,j}`
+  for k=1:n
+    u(k,k)=a(k,k)
 
-    :math:`l_{j,1}=\dfrac{a_{j,1}}{a_{1,1}}`
-**fin**
+    for i=k+1:n
+      l(i,k)=a(i,k)/u(k,k)
+      u(k,i)=a(k,i)
 
-**pour**  i=2..n-1
-    :math:`u_{i,i}=a_{i,i}-\sum_{k=1}^{i-1}l_{ik}u_{ki}`
+    for i=k+1 : n
+      for j=k+1:n
+        a(i,j)=a(i,j)-l(i,k)u(k,j)
 
-    **Pour** j=1+1..n
-        :math:`u_{i,j}=a_{i,j}-\sum_{k=1}^{i-1}l_{ik}u_{kj}`
 
-        :math:`u_{j,i}=\dfrac{1}{u_{i,i}}\big[ a_{j,i}-\sum_{k=1}^{i-1}l_{jk}u_{ki} \big]`
-    **fin**
-**fin**
+
 
 
 .. centered:: fonction decomposition
@@ -166,8 +163,6 @@ et donc le système est donné par:
     :language: matlab
     :linenos:
 
-
-.. centered:: solve_lu
 
 .. literalinclude:: ../codes/tp03/solve_lu.m
     :language: matlab
@@ -180,3 +175,38 @@ et donc le système est donné par:
     %test de la solution avec lu_dcm
     fprintf('solution par la decomposition LU:')
     x1=solve_lu(A,b)
+
+=========
+
+
+.. note::
+
+  On peut optimiser la mémoire du programme, en sauvegardant :math:`L` et :math:`U`, dans  la même matrice.
+
+
+**Algorithme LU( 2)**::
+
+  for k=1:n-1
+    for i=k+1:n
+      a(i,k)=a(i,k)/a(k,k)
+
+      for j=k+1:n
+        a(i,j)=a(i,j)-l(i,k)*a(k,j)
+
+
+A la fin du programme, la partie triangulaire sup de :math:`A` est :math:`U`, et :math:`L` est sauvegadée dans la partie inférieure **sans sa diagonale** (implicitement =1)
+
+
+.. centered:: fonction decomposition compacte
+
+.. literalinclude:: ../codes/tp03/lu_dcm2.m
+    :language: matlab
+    :linenos:
+
+
+.. centered:: Résolution avec la matrice compacte
+
+
+.. literalinclude:: ../codes/tp03/solve2_lu.m
+    :language: matlab
+    :linenos:

@@ -272,28 +272,19 @@
 <ol class="arabic simple" start="6">
 <li>Ecrire une fonction qui résout un système linéaire <span class="math">\(Ax=b\)</span> par la méthode de <strong>LU</strong>.</li>
 </ol>
-<p class="centered">
-<strong>Algorithme LU</strong></p><p><span class="math">\(u_{1,1}=a_{1,1}\)</span></p>
-<dl class="docutils">
-<dt><strong>Pour</strong> j=2...n</dt>
-<dd><p class="first"><span class="math">\(u_{1,j}=a_{1,j}\)</span></p>
-<p class="last"><span class="math">\(l_{j,1}=\dfrac{a_{j,1}}{a_{1,1}}\)</span></p>
-</dd>
-</dl>
-<p><strong>fin</strong></p>
-<dl class="docutils">
-<dt><strong>pour</strong>  i=2..n-1</dt>
-<dd><p class="first"><span class="math">\(u_{i,i}=a_{i,i}-\sum_{k=1}^{i-1}l_{ik}u_{ki}\)</span></p>
-<dl class="docutils">
-<dt><strong>Pour</strong> j=1+1..n</dt>
-<dd><p class="first"><span class="math">\(u_{i,j}=a_{i,j}-\sum_{k=1}^{i-1}l_{ik}u_{kj}\)</span></p>
-<p class="last"><span class="math">\(u_{j,i}=\dfrac{1}{u_{i,i}}\big[ a_{j,i}-\sum_{k=1}^{i-1}l_{jk}u_{ki} \big]\)</span></p>
-</dd>
-</dl>
-<p class="last"><strong>fin</strong></p>
-</dd>
-</dl>
-<p><strong>fin</strong></p>
+<p><strong>Algorithme LU</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>for k=1:n
+  u(k,k)=a(k,k)
+
+  for i=k+1:n
+    l(i,k)=a(i,k)/u(k,k)
+    u(k,i)=a(k,i)
+
+  for i=k+1 : n
+    for j=k+1:n
+      a(i,j)=a(i,j)-l(i,k)u(k,j)
+</pre></div>
+</div>
 <p class="centered">
 <strong>fonction decomposition</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -323,43 +314,38 @@
 26
 27
 28
-29
-30
-31</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[L,U]<span class="p">=</span><span class="nf">lu_dcm</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+29</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[L,U]<span class="p">=</span><span class="nf">lu_dcm</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
 <span class="c">%% fonction pour obtenir la decomposition A=LU</span>
 <span class="c">% les matrices L,U seront stockés dans A</span>
 
     <span class="c">%calculer la taille de A</span>
     <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+    
+    <span class="c">%Inialisation des deux matrices</span>
     <span class="n">L</span><span class="p">=</span><span class="nb">eye</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
     <span class="n">U</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
     
-    <span class="c">%premiere valeur de U11</span>
-    <span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-    <span class="c">%premire ligne et colonne et (U,L)</span>
-    <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span>
-        <span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span>
-        <span class="n">L</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-    <span class="k">end</span>
-    
-    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span>    
-        <span class="c">%calcul de A(i,i)</span>
-        <span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">-</span> <span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
         
-        <span class="c">%ieme ligne de U et colonne de L</span>
-        <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
-            <span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">-</span><span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span>
-            <span class="n">L</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">i</span><span class="p">)=(</span><span class="n">A</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">-</span> <span class="n">L</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nb">i</span><span class="p">))</span><span class="o">/</span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+        <span class="n">U</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+        
+        <span class="c">%calcul de kieme ligne de U et kieme colonne de L</span>
+        <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+            <span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">k</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">U</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+            <span class="n">U</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">i</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+        <span class="k">end</span>
+        
+        <span class="c">%transformation de la matrice intérieure </span>
+        <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+            <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+                <span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">-</span><span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span>
+            <span class="k">end</span>
         <span class="k">end</span>
     <span class="k">end</span>
-        
-    <span class="c">%dernier element</span>
-    <span class="n">U</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="n">L</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
 <span class="k">end</span>
 </pre></div>
 </td></tr></table></div>
-<p class="centered">
-<strong>solve_lu</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -374,11 +360,11 @@
 13
 14</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>x<span class="p">=</span><span class="nf">solve_lu</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
 <span class="c">%% fonction pour résoudre le système Ax=b avec la méthode LU</span>
+<span class="c">% avec LU resultatn en deux matrices</span>
 
 
 <span class="c">%decomposition LU</span>
-<span class="n">B</span><span class="p">=</span><span class="n">A</span><span class="p">;</span>
-<span class="p">[</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">]=</span><span class="n">lu_dcm</span><span class="p">(</span><span class="n">B</span><span class="p">);</span>
+<span class="p">[</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">]=</span><span class="n">lu_dcm</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
 
 <span class="c">%resolution du système inférieur</span>
 <span class="n">y1</span><span class="p">=</span><span class="n">rsl_tri_inf</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
@@ -394,6 +380,117 @@
 <span class="n">x1</span><span class="p">=</span><span class="n">solve_lu</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
 </pre></div>
 </div>
+<hr class="docutils" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On peut optimiser la mémoire du programme, en sauvegardant <span class="math">\(L\)</span> et <span class="math">\(U\)</span>, dans  la même matrice.</p>
+</div>
+<p><strong>Algorithme LU( 2)</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>for k=1:n-1
+  for i=k+1:n
+    a(i,k)=a(i,k)/a(k,k)
+
+    for j=k+1:n
+      a(i,j)=a(i,j)-l(i,k)*a(k,j)
+</pre></div>
+</div>
+<p>A la fin du programme, la partie triangulaire sup de <span class="math">\(A\)</span> est <span class="math">\(U\)</span>, et <span class="math">\(L\)</span> est sauvegadée dans la partie inférieure <strong>sans sa diagonale</strong> (implicitement =1)</p>
+<p class="centered">
+<strong>fonction decomposition compacte</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>LU<span class="p">=</span><span class="nf">lu_dcm2</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">% fonction 2 pour calculer la décomposition LU de A</span>
+    
+    <span class="c">%nombre de ligne de A</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span>
+         <span class="c">%calcul du terme de la diagonale de U</span>
+        <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+            <span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">k</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+        
+            
+            <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+                <span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">-</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">LU</span><span class="p">=</span><span class="n">A</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p class="centered">
+<strong>Résolution avec la matrice compacte</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>x<span class="p">=</span><span class="nf">solve2_lu</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+<span class="c">%% fonction pour résoudre le système Ax=b avec la méthode LU</span>
+<span class="c">% avec LU stockée dans une seule matrice</span>
+
+
+<span class="c">%decomposition LU</span>
+<span class="n">LU</span><span class="p">=</span><span class="n">lu_dcm2</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
+
+<span class="c">%extraire les matrices (L,U)( ce qui est contradictoire car le but était</span>
+<span class="c">% de minimiser l&#39;espace de stockage, donc avec cette stratégie il vaut</span>
+<span class="c">%mieux adapter les méthode descente et montee pour ce type de matrice</span>
+
+<span class="n">U</span><span class="p">=</span><span class="nb">triu</span><span class="p">(</span><span class="n">LU</span><span class="p">);</span>
+<span class="n">L</span><span class="p">=</span><span class="nb">tril</span><span class="p">(</span><span class="n">LU</span><span class="p">);</span>
+<span class="c">%introduire 1 dans la diagonale de L</span>
+<span class="n">n</span><span class="p">=</span><span class="nb">size</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+    <span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)=</span><span class="mi">1</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="c">%resolution du système inférieur</span>
+<span class="n">y1</span><span class="p">=</span><span class="n">rsl_tri_inf</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+<span class="c">%resolution du système supérieur</span>
+<span class="n">x</span><span class="p">=</span><span class="n">rsl_tri_sup</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">y1</span><span class="p">);</span>
+
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
 </div>
 </div>
 

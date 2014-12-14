@@ -22,4 +22,4 @@ x=A\b
 
 %testing the solution with lu_dcm
 fprintf('solution par la decomposition LU:')
-x1=solve_lu(A,b)
+x1=solve2_lu(A,b)
