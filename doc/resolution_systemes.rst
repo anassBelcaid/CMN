@@ -210,3 +210,283 @@ A la fin du programme, la partie triangulaire sup de :math:`A` est :math:`U`, et
 .. literalinclude:: ../codes/tp03/solve2_lu.m
     :language: matlab
     :linenos:
+
+
+.. seance2_:
+
+Séance 2:
+==========
+
+.. topic:: Objectif
+
+  En utilisant Matlab, résoudre un système d'équation linéaires par les méthodes itératives de Jacobi et de relaxation
+
+
+1. Résoudre le problème :math:`Ax=b` par la méthode de **Jacobi**.
+
+La méthode de **Jacobi** consiste a prendre la matrice de précondionnement comme
+
+.. math::
+
+    P=D
+
+où :math:`D` est la diagonale de :math:`A`.
+
+Ce qui donne le schéma iteratif suivant:
+
+.. math::
+
+    D x^{(k+1)}=b - (A-D)x^{(k)}
+
+ou
+
+
+.. math::
+
+    x_i^{(k+1)}=\big( b_i - \sum_{i=0\; i\ne j}^n A_{ij}x_j^{k}\big)/ A_{ii}
+
+
+
+.. centered:: **fonction jacobi**
+
+.. literalinclude:: ../codes/tp03/jacobi.m
+    :language: matlab
+    :linenos:
+
+
+
+Pour *assurer** la convergence de la méthode on considère un système **tridiagonl** a diagonale strictement dominante.donc elle sera **définie positive**.
+
+
+.. literalinclude:: ../codes/tp03/mat_def_pos.m
+    :language: matlab
+    :linenos:
+
+
+.. centered:: Script exercice2 (Version 1)
+
+
+.. code-block:: matlab
+
+  %% script pour résoudre des systèmes linéaires en utilisant différents
+  % methodes iteratives
+  clc
+  clear all
+
+  %% générer un système avec A définie posotive
+  n=10;
+  A=mat_def_pos(n);
+
+  %on s'arrange a ce que la solution soit 1:10
+  b=A*(1:n)';
+
+  %résoudre le système avec jacobi
+  [x,iter]=jacobi(A,b,zeros(size(b)),1E3,1E-2)
+
+
+ce qui donne::
+
+  x =
+
+    0.9991
+    1.9983
+    2.9975
+    3.9970
+    4.9965
+    5.9966
+    6.9966
+    7.9972
+    8.9979
+    9.9989
+
+
+  iter =
+
+    17
+
+2. Comparer le nombre des itérations et la qualité de la solution de cette méthode en variant les tests d'arrêts.
+
+.. code-block:: matlab
+
+  %résoudre le système avec jacobi
+  [x,iter]=jacobi(A,b,zeros(size(b)),1E3,1E-4)
+
+
+donnera::
+
+  x =
+
+   0.999993081617482
+   1.999986163234963
+   2.999981308673021
+   3.999976454111080
+   4.999975226870633
+   5.999973999630186
+   6.999976940830842
+   7.999979882031500
+   8.999986161656901
+   9.999992441282302
+
+  >> iter
+
+  iter =
+
+    28
+
+Pour voir l'évolution de **nombre d'itérations** on se propose de *tracer* la courbe du nombre d'itérations en fonction de la **taille** du système. en fixant le test d'arrêt.
+
+
+.. centered:: Exercice2 (suite)
+
+.. code-block:: matlab
+
+  %% visualiser la courbe des nombres d'itérations
+  tailles=[10,20,40,80,160,320,640,1280,2540];
+  iters=zeros(size(tailles));
+  L=length(tailles);
+
+  %on sauvegarde les résultats dans un fichier
+  fid=fopen('jacobi_itertions.txt','w')
+  for i=1:L
+
+    %extraire la taille
+    n=tailles(i);
+
+    %construire la matrice de taille n
+    A=mat_def_pos(n);
+
+    b=A*(1:n)';
+
+
+    %résoudre le système avec jacobi
+    [x,iters(i)]=jacobi(A,b,zeros(size(b)),1E3,1E-2);
+
+    %sauvegarde des resultats
+    fprintf('%d\t%d\n',n,iters(i));
+  end
+  fclose(fid);
+
+
+  %representation graphique
+  hold on
+  id1=plot(tailles,iters,'b*-')
+  xlabel('taille matrice');ylabel('iteration jacobi')
+  title('nombre d iterations de la methode de jacobi')
+  saveas(id1,'jacobi_iteration.png')
+
+.. figure:: ../codes/tp03/jacobi_iteration.png
+    :scale: 50%
+    :alt:    text if image isn't found
+    :align: center
+
+    evolution du nombre d'itérations en fonction de la taille
+
+----------
+
+3. Résoudre le problème :math:`Ax=b` par la méthode de **relaxation**
+
+la méthode de **relaxation** est donnée par
+
+.. math::
+
+    (D+\omega L)x^{(k+1)}=\big((1-\omega)D -\omega U\big)x^{k}+wb
+
+
+et la formulation **scalaire** est donné par:
+
+.. math::
+
+  x^{(k+1)}=\omega\big( b_i - \sum_{j=1}^{i-1}A_{ij}x^{(k+1)}_j - \sum_{j=i+1}^n A_{ij}x^{k}_j \big)+(1-\omega)x_i^{(k)}
+
+
+
+.. centered:: **Fonction relaxation**
+
+
+.. literalinclude:: ../codes/tp03/relaxation.m
+    :language: matlab
+    :linenos:
+
+.. centered:: **Script 2**
+
+.. code-block:: matlab
+
+  %% générer un système avec A définie positive
+  n=10;
+  A=mat_def_pos(n);
+
+  %on s'arrange a ce que la solution soit 1:10
+  b=A*(1:n)';
+
+
+  %résoudre le système avec jacobi
+  w=1.2;
+  [x,iter]=relaxation(A,b,w,zeros(size(b)),1E3,1E-2)
+
+
+on obtient::
+
+  w =
+
+   1.200000000000000
+
+
+  x =
+
+   0.999548399661875
+   2.002243816460910
+   2.999649762936567
+   3.999797441638391
+   4.999956473786621
+   5.999999769226714
+   7.000004030757512
+   8.000001967834036
+   9.000000575580618
+  10.000000098171340
+
+
+  iter =
+
+     9
+
+-------
+
+4. Tracer le nombre d'itérations en fonction du paramètre :math:`\omega \;\in ]0,2[` avec un test d’arrêt fixé.
+
+
+.. centered:: **Suite Script 2**
+
+
+.. code-block:: matlab
+
+  %descrtisation de la valeur de omega
+  Omega=linspace(0.2,1.9,100);
+  iters=zeros(100,1);
+
+  %boucle pour calculer le nombre d'itérations
+
+  for i=1:100
+
+     %appel de relaxation
+     [x,iters(i)]=relaxation(A,b,Omega(i),zeros(size(b)),1E3,1E-2);
+
+  end
+
+  id=plot(Omega,iters,'r--','lineWidth',1.5)
+  title('nombre diterations en fonction de omega')
+  x_label('w'); xlabel('nombre iteration')
+
+  saveas(id,'relaxation_iterations.png')
+
+
+et obient :
+
+.. figure:: ../codes/tp03/relaxation_iterations.png
+    :scale: 50%
+    :alt:    text if image isn't found
+    :align: center
+
+    nombre d'itération en fonction de la valeur w.
+
+
+

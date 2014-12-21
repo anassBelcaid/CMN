@@ -492,6 +492,399 @@
 </pre></div>
 </td></tr></table></div>
 </div>
+<div class="section" id="seance-2">
+<h2>Séance 2:<a class="headerlink" href="#seance-2" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Objectif</p>
+<p>En utilisant Matlab, résoudre un système d&#8217;équation linéaires par les méthodes itératives de Jacobi et de relaxation</p>
+</div>
+<ol class="arabic simple">
+<li>Résoudre le problème <span class="math">\(Ax=b\)</span> par la méthode de <strong>Jacobi</strong>.</li>
+</ol>
+<p>La méthode de <strong>Jacobi</strong> consiste a prendre la matrice de précondionnement comme</p>
+<div class="math">
+\[P=D\]</div>
+<p>où <span class="math">\(D\)</span> est la diagonale de <span class="math">\(A\)</span>.</p>
+<p>Ce qui donne le schéma iteratif suivant:</p>
+<div class="math">
+\[D x^{(k+1)}=b - (A-D)x^{(k)}\]</div>
+<p>ou</p>
+<div class="math">
+\[x_i^{(k+1)}=\big( b_i - \sum_{i=0\; i\ne j}^n A_{ij}x_j^{k}\big)/ A_{ii}\]</div>
+<p class="centered">
+<strong><strong>fonction jacobi</strong></strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[x1,iter]<span class="p">=</span><span class="nf">jacobi</span><span class="p">(</span>A,b,x0,iterMax,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%% fonction pour résoudre le système Ax=b, en utilisant la</span>
+<span class="c">% méthode iterative de Jacobi.</span>
+
+    <span class="c">%% Entrées:</span>
+    <span class="c">%  A,b    :  matrice et second membre du syteme</span>
+    <span class="c">%   x0    :  veteur intial</span>
+    <span class="c">% iterMax :  nombre maximal d&#39;itération</span>
+    <span class="c">%  tol    : tolérance pour le test d&#39;arret</span>
+
+    <span class="c">%% Sorties:</span>
+
+    <span class="c">%  x    : approximation du vecteur solution</span>
+    <span class="c">%  iter : nombre d&#39;itérations utilisées</span>
+    
+    
+    <span class="c">%% intialisation</span>
+    <span class="n">iter</span><span class="p">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">x1</span><span class="p">=</span><span class="n">x0</span><span class="p">;</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>   <span class="c">%nombre de ligne de A</span>
+    
+    <span class="c">%calcul du résidu</span>
+    <span class="n">R</span><span class="p">=</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">A</span><span class="o">*</span><span class="n">x0</span><span class="p">);</span>
+    
+    <span class="c">%schema iteratif</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">R</span><span class="o">&gt;</span><span class="n">tol</span> <span class="o">&amp;&amp;</span> <span class="n">iter</span><span class="o">&lt;</span><span class="n">iterMax</span><span class="p">)</span>
+        
+        <span class="c">%calculer le nouvelles composantes de x</span>
+        <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+            <span class="n">x1</span><span class="p">(</span><span class="nb">i</span><span class="p">)=(</span><span class="n">b</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="o">-</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">x0</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">x0</span><span class="p">(</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">))</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+        <span class="k">end</span>
+        
+        <span class="c">%calcul du nouveau résidu</span>
+        <span class="n">R</span><span class="p">=</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">A</span><span class="o">*</span><span class="n">x1</span><span class="p">);</span>
+        
+        <span class="c">%préparer la nouvelle iteration</span>
+        <span class="n">iter</span><span class="p">=</span><span class="n">iter</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">x0</span><span class="p">=</span><span class="n">x1</span><span class="p">;</span>
+    <span class="k">end</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">iter</span><span class="o">&gt;</span><span class="p">=</span><span class="n">iterMax</span><span class="p">)</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">&#39;algorithme nas pas converge&#39;</span><span class="p">);</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p>Pour <em>assurer*</em> la convergence de la méthode on considère un système <strong>tridiagonl</strong> a diagonale strictement dominante.donc elle sera <strong>définie positive</strong>.</p>
+<div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>A<span class="p">=</span><span class="nf">mat_def_pos</span><span class="p">(</span>n<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">% fonction pour générer une matrice tridiagonale , définie positive</span>
+    <span class="c">% pour tester l&#39;algorithme de jacobi</span>
+    
+    <span class="n">A</span><span class="p">=</span><span class="mi">3</span><span class="o">*</span><span class="nb">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="nb">diag</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="nb">diag</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p class="centered">
+<strong>Script exercice2 (Version 1)</strong></p><div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% script pour résoudre des systèmes linéaires en utilisant différents</span>
+<span class="c">% methodes iteratives</span>
+<span class="n">clc</span>
+<span class="n">clear</span> <span class="n">all</span>
+
+<span class="c">%% générer un système avec A définie posotive</span>
+<span class="n">n</span><span class="p">=</span><span class="mi">10</span><span class="p">;</span>
+<span class="n">A</span><span class="p">=</span><span class="n">mat_def_pos</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+<span class="c">%on s&#39;arrange a ce que la solution soit 1:10</span>
+<span class="n">b</span><span class="p">=</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span>
+
+<span class="c">%résoudre le système avec jacobi</span>
+<span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">iter</span><span class="p">]=</span><span class="n">jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">b</span><span class="p">)),</span><span class="mf">1E3</span><span class="p">,</span><span class="mf">1E-2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>ce qui donne:</p>
+<div class="highlight-python"><div class="highlight"><pre>x =
+
+  0.9991
+  1.9983
+  2.9975
+  3.9970
+  4.9965
+  5.9966
+  6.9966
+  7.9972
+  8.9979
+  9.9989
+
+
+iter =
+
+  17
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Comparer le nombre des itérations et la qualité de la solution de cette méthode en variant les tests d&#8217;arrêts.</li>
+</ol>
+<div class="highlight-matlab"><div class="highlight"><pre><span class="c">%résoudre le système avec jacobi</span>
+<span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">iter</span><span class="p">]=</span><span class="n">jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">b</span><span class="p">)),</span><span class="mf">1E3</span><span class="p">,</span><span class="mf">1E-4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>donnera:</p>
+<div class="highlight-python"><div class="highlight"><pre>x =
+
+ 0.999993081617482
+ 1.999986163234963
+ 2.999981308673021
+ 3.999976454111080
+ 4.999975226870633
+ 5.999973999630186
+ 6.999976940830842
+ 7.999979882031500
+ 8.999986161656901
+ 9.999992441282302
+
+&gt;&gt; iter
+
+iter =
+
+  28
+</pre></div>
+</div>
+<p>Pour voir l&#8217;évolution de <strong>nombre d&#8217;itérations</strong> on se propose de <em>tracer</em> la courbe du nombre d&#8217;itérations en fonction de la <strong>taille</strong> du système. en fixant le test d&#8217;arrêt.</p>
+<p class="centered">
+<strong>Exercice2 (suite)</strong></p><div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% visualiser la courbe des nombres d&#39;itérations</span>
+<span class="n">tailles</span><span class="p">=[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">160</span><span class="p">,</span><span class="mi">320</span><span class="p">,</span><span class="mi">640</span><span class="p">,</span><span class="mi">1280</span><span class="p">,</span><span class="mi">2540</span><span class="p">];</span>
+<span class="n">iters</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">tailles</span><span class="p">));</span>
+<span class="n">L</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">tailles</span><span class="p">);</span>
+
+<span class="c">%on sauvegarde les résultats dans un fichier</span>
+<span class="n">fid</span><span class="p">=</span><span class="n">fopen</span><span class="p">(</span><span class="s">&#39;jacobi_itertions.txt&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">L</span>
+
+  <span class="c">%extraire la taille</span>
+  <span class="n">n</span><span class="p">=</span><span class="n">tailles</span><span class="p">(</span><span class="nb">i</span><span class="p">);</span>
+
+  <span class="c">%construire la matrice de taille n</span>
+  <span class="n">A</span><span class="p">=</span><span class="n">mat_def_pos</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+  <span class="n">b</span><span class="p">=</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span>
+
+
+  <span class="c">%résoudre le système avec jacobi</span>
+  <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">iters</span><span class="p">(</span><span class="nb">i</span><span class="p">)]=</span><span class="n">jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">b</span><span class="p">)),</span><span class="mf">1E3</span><span class="p">,</span><span class="mf">1E-2</span><span class="p">);</span>
+
+  <span class="c">%sauvegarde des resultats</span>
+  <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;%d\t%d\n&#39;</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">iters</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span>
+<span class="k">end</span>
+<span class="n">fclose</span><span class="p">(</span><span class="n">fid</span><span class="p">);</span>
+
+
+<span class="c">%representation graphique</span>
+<span class="n">hold</span> <span class="n">on</span>
+<span class="n">id1</span><span class="p">=</span><span class="n">plot</span><span class="p">(</span><span class="n">tailles</span><span class="p">,</span><span class="n">iters</span><span class="p">,</span><span class="s">&#39;b*-&#39;</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;taille matrice&#39;</span><span class="p">);</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;iteration jacobi&#39;</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;nombre d iterations de la methode de jacobi&#39;</span><span class="p">)</span>
+<span class="n">saveas</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span><span class="s">&#39;jacobi_iteration.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/jacobi_iteration.png"><img alt="text if image isn't found" src="_images/jacobi_iteration.png" style="width: 600.0px; height: 450.5px;" /></a>
+<p class="caption">evolution du nombre d&#8217;itérations en fonction de la taille</p>
+</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="3">
+<li>Résoudre le problème <span class="math">\(Ax=b\)</span> par la méthode de <strong>relaxation</strong></li>
+</ol>
+<p>la méthode de <strong>relaxation</strong> est donnée par</p>
+<div class="math">
+\[(D+\omega L)x^{(k+1)}=\big((1-\omega)D -\omega U\big)x^{k}+wb\]</div>
+<p>et la formulation <strong>scalaire</strong> est donné par:</p>
+<div class="math">
+\[x^{(k+1)}=\omega\big( b_i - \sum_{j=1}^{i-1}A_{ij}x^{(k+1)}_j - \sum_{j=i+1}^n A_{ij}x^{k}_j \big)+(1-\omega)x_i^{(k)}\]</div>
+<p class="centered">
+<strong><strong>Fonction relaxation</strong></strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[x1,iter]<span class="p">=</span><span class="nf">relaxation</span><span class="p">(</span>A,b,w,x0,iterMax,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%% fonction pour résoudre un système linéaire en utilisant la méthode </span>
+<span class="c">% itérative de relaxation</span>
+
+   <span class="c">%% intialisation</span>
+    <span class="n">iter</span><span class="p">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">x1</span><span class="p">=</span><span class="n">x0</span><span class="p">;</span>
+    <span class="n">n</span><span class="p">=</span><span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>   <span class="c">%nombre de ligne de A</span>
+    
+    <span class="c">%calcul du résidu</span>
+    <span class="n">R</span><span class="p">=</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">A</span><span class="o">*</span><span class="n">x0</span><span class="p">);</span>
+    
+    <span class="c">%schema iteratif</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">R</span><span class="o">&gt;</span><span class="n">tol</span> <span class="o">&amp;&amp;</span> <span class="n">iter</span><span class="o">&lt;</span><span class="n">iterMax</span><span class="p">)</span>
+        
+        <span class="c">%calculer le nouvelles composantes de x</span>
+        <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+            <span class="c">%produit scalaire 1</span>
+            <span class="n">s1</span><span class="p">=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">x1</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+            
+            <span class="c">%produit scalaire 2</span>
+            <span class="n">s2</span><span class="p">=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">x0</span><span class="p">(</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">);</span>
+            
+            <span class="c">%calcul du nouveau x1</span>
+            <span class="n">x1</span><span class="p">(</span><span class="nb">i</span><span class="p">)=</span><span class="n">w</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="o">-</span><span class="n">s1</span><span class="o">-</span><span class="n">s2</span><span class="p">)</span><span class="o">/</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">*</span><span class="n">x1</span><span class="p">(</span><span class="nb">i</span><span class="p">);</span>
+        <span class="k">end</span>
+        
+        <span class="c">%calcul du nouveau résidu</span>
+        <span class="n">R</span><span class="p">=</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">A</span><span class="o">*</span><span class="n">x1</span><span class="p">);</span>
+        
+        <span class="c">%préparer la nouvelle iteration</span>
+        <span class="n">iter</span><span class="p">=</span><span class="n">iter</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">x0</span><span class="p">=</span><span class="n">x1</span><span class="p">;</span>
+    <span class="k">end</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">iter</span><span class="o">&gt;</span><span class="p">=</span><span class="n">iterMax</span><span class="p">)</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">&#39;algorithme nas pas converge&#39;</span><span class="p">);</span>
+    <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<p class="centered">
+<strong><strong>Script 2</strong></strong></p><div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% générer un système avec A définie posotive</span>
+<span class="n">n</span><span class="p">=</span><span class="mi">10</span><span class="p">;</span>
+<span class="n">A</span><span class="p">=</span><span class="n">mat_def_pos</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+<span class="c">%on s&#39;arrange a ce que la solution soit 1:10</span>
+<span class="n">b</span><span class="p">=</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span>
+
+
+<span class="c">%résoudre le système avec jacobi</span>
+<span class="n">w</span><span class="p">=</span><span class="mf">1.2</span><span class="p">;</span>
+<span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">iter</span><span class="p">]=</span><span class="n">relaxation</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">b</span><span class="p">)),</span><span class="mf">1E3</span><span class="p">,</span><span class="mf">1E-2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>on obtient:</p>
+<div class="highlight-python"><div class="highlight"><pre>w =
+
+ 1.200000000000000
+
+
+x =
+
+ 0.999548399661875
+ 2.002243816460910
+ 2.999649762936567
+ 3.999797441638391
+ 4.999956473786621
+ 5.999999769226714
+ 7.000004030757512
+ 8.000001967834036
+ 9.000000575580618
+10.000000098171340
+
+
+iter =
+
+   9
+</pre></div>
+</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="4">
+<li>Tracer le nombre d&#8217;itérations en fonction du paramètre <span class="math">\(\omega \;\in ]0,2[\)</span> avec un test d&#8217;arret fixé.</li>
+</ol>
+<p class="centered">
+<strong><strong>Suite Script 2</strong></strong></p><div class="highlight-matlab"><div class="highlight"><pre><span class="c">%descrtisation de la valeur de omega</span>
+<span class="n">Omega</span><span class="p">=</span><span class="nb">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">1.9</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span>
+<span class="n">iters</span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c">%boucle pour calculer le nombre d&#39;itérations</span>
+
+<span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">100</span>
+
+   <span class="c">%appel de relaxation</span>
+   <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">iters</span><span class="p">(</span><span class="nb">i</span><span class="p">)]=</span><span class="n">relaxation</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">Omega</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">b</span><span class="p">)),</span><span class="mf">1E3</span><span class="p">,</span><span class="mf">1E-2</span><span class="p">);</span>
+
+<span class="k">end</span>
+
+<span class="n">id</span><span class="p">=</span><span class="n">plot</span><span class="p">(</span><span class="n">Omega</span><span class="p">,</span><span class="n">iters</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="s">&#39;lineWidth&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;nombre diterations en fonction de omega&#39;</span><span class="p">)</span>
+<span class="n">x_label</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">);</span> <span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;nombre iteration&#39;</span><span class="p">)</span>
+
+<span class="n">saveas</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="s">&#39;relaxation_iterations.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>et obient :</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/relaxation_iterations.png"><img alt="text if image isn't found" src="_images/relaxation_iterations.png" style="width: 600.0px; height: 450.5px;" /></a>
+<p class="caption">nombre d&#8217;itération en fonction de la valeur w.</p>
+</div>
+</div>
 </div>
 
 
@@ -504,6 +897,7 @@
   <ul>
 <li><a class="reference internal" href="#">Résolution d&#8217;un système d&#8217;équations linéaires</a><ul>
 <li><a class="reference internal" href="#seance-1">Séance 1:</a></li>
+<li><a class="reference internal" href="#seance-2">Séance 2:</a></li>
 </ul>
 </li>
 </ul>
