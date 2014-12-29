@@ -222,6 +222,53 @@ Séance 2:
   En utilisant Matlab, résoudre un système d'équation linéaires par les méthodes itératives de Jacobi et de relaxation
 
 
+Une méthode itérative pour résoudre un système linéaire, s'écrit sous la forme.
+
+.. math::
+
+    x^{(k+1)}=Bx^{(k)}+ g  \quad \forall k \ge 0
+
+et qui doit vérifier que :math:`x` est point **stationnaire**
+
+.. math::
+
+    x=Bx+ g
+
+
+* Puisque :math:`x=A^{-1}b` on obtient que
+
+.. math::
+
+  g=A^{-}(I-B)b.
+
+* Soit :math:`e^{(k)}=x^{(k)}-x`, *l'erreur*  à l'itérations :math:`k`.
+
+alors on obtient que
+
+.. math::
+
+    \begin{eqnarray}
+             e^{(k+1)}&=&x^{(k+1)}-x\\
+                      &=&Bx^{k}-A^{-1}(I-B)b -x\\
+                      &=&Bx^{k}+A^{-1}b -Bb -A^{-1}b\\
+                      &=&B(x^{k}-x)\\
+                      &=&Be^{k}
+    \end{eqnarray}
+
+
+.. note::
+
+  la matrice :math:`B` est appelée la matrice **d'itération**, et on a
+
+  .. math::
+
+      ||e^{(k)}|| \le (\rho(B))^k||e^{(0)}||
+
+
+et donc pour que :math:`||e^{(k)}|| \rightarrow 0`, il faut que :math:`\rho(B)<1`.
+
+----------
+
 1. Résoudre le problème :math:`Ax=b` par la méthode de **Jacobi**.
 
 La méthode de **Jacobi** consiste a prendre la matrice de précondionnement comme
@@ -243,7 +290,7 @@ ou
 
 .. math::
 
-    x_i^{(k+1)}=\big( b_i - \sum_{i=0\; i\ne j}^n A_{ij}x_j^{k}\big)/ A_{ii}
+    x_i^{(k+1)}=\big( b_i - \sum_{j=0\; i\ne j}^n A_{ij}x_j^{k}\big)/ A_{ii}
 
 
 
@@ -255,7 +302,7 @@ ou
 
 
 
-Pour *assurer** la convergence de la méthode on considère un système **tridiagonl** a diagonale strictement dominante.donc elle sera **définie positive**.
+Pour **assurer** la convergence de la méthode on considère un système **tridiagonl** a diagonale strictement dominante.
 
 
 .. literalinclude:: ../codes/tp03/mat_def_pos.m
@@ -411,7 +458,7 @@ et la formulation **scalaire** est donné par:
 
 .. code-block:: matlab
 
-  %% générer un système avec A définie posotive
+  %% générer un système avec A définie positive
   n=10;
   A=mat_def_pos(n);
 
@@ -451,7 +498,7 @@ on obtient::
 
 -------
 
-4. Tracer le nombre d'itérations en fonction du paramètre :math:`\omega \;\in ]0,2[` avec un test d'arret fixé.
+4. Tracer le nombre d'itérations en fonction du paramètre :math:`\omega \;\in ]0,2[` avec un test d’arrêt fixé.
 
 
 .. centered:: **Suite Script 2**

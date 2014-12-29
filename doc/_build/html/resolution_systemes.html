@@ -498,6 +498,37 @@
 <p class="topic-title first">Objectif</p>
 <p>En utilisant Matlab, résoudre un système d&#8217;équation linéaires par les méthodes itératives de Jacobi et de relaxation</p>
 </div>
+<p>Une méthode itérative pour résoudre un système linéaire, s&#8217;écrit sous la forme.</p>
+<div class="math">
+\[x^{(k+1)}=Bx^{(k)}+ g  \quad \forall k \ge 0\]</div>
+<p>et qui doit vérifier que <span class="math">\(x\)</span> est point <strong>stationnaire</strong></p>
+<div class="math">
+\[x=Bx+ g\]</div>
+<ul class="simple">
+<li>Puisque <span class="math">\(x=A^{-1}b\)</span> on obtient que</li>
+</ul>
+<div class="math">
+\[g=A^{-}(I-B)b.\]</div>
+<ul class="simple">
+<li>Soit <span class="math">\(e^{(k)}=x^{(k)}-x\)</span>, <em>l&#8217;erreur</em>  à l&#8217;itérations <span class="math">\(k\)</span>.</li>
+</ul>
+<p>alors on obtient que</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+         e^{(k+1)}&amp;=&amp;x^{(k+1)}-x\\
+                  &amp;=&amp;Bx^{k}-A^{-1}(I-B)b -x\\
+                  &amp;=&amp;Bx^{k}+A^{-1}b -Bb -A^{-1}b\\
+                  &amp;=&amp;B(x^{k}-x)\\
+                  &amp;=&amp;Be^{k}
+\end{eqnarray}\end{split}\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>la matrice <span class="math">\(B\)</span> est appelée la matrice <strong>d&#8217;itération</strong>, et on a</p>
+<div class="last math">
+\[||e^{(k)}|| \le (\rho(B))^k||e^{(0)}||\]</div>
+</div>
+<p>et donc pour que <span class="math">\(||e^{(k)}|| \rightarrow 0\)</span>, il faut que <span class="math">\(\rho(B)&lt;1\)</span>.</p>
+<hr class="docutils" />
 <ol class="arabic simple">
 <li>Résoudre le problème <span class="math">\(Ax=b\)</span> par la méthode de <strong>Jacobi</strong>.</li>
 </ol>
@@ -510,7 +541,7 @@
 \[D x^{(k+1)}=b - (A-D)x^{(k)}\]</div>
 <p>ou</p>
 <div class="math">
-\[x_i^{(k+1)}=\big( b_i - \sum_{i=0\; i\ne j}^n A_{ij}x_j^{k}\big)/ A_{ii}\]</div>
+\[x_i^{(k+1)}=\big( b_i - \sum_{j=0\; i\ne j}^n A_{ij}x_j^{k}\big)/ A_{ii}\]</div>
 <p class="centered">
 <strong><strong>fonction jacobi</strong></strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -601,7 +632,7 @@
 <span class="k">end</span>
 </pre></div>
 </td></tr></table></div>
-<p>Pour <em>assurer*</em> la convergence de la méthode on considère un système <strong>tridiagonl</strong> a diagonale strictement dominante.donc elle sera <strong>définie positive</strong>.</p>
+<p>Pour <strong>assurer</strong> la convergence de la méthode on considère un système <strong>tridiagonl</strong> a diagonale strictement dominante.</p>
 <div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -816,7 +847,7 @@ iter =
 </pre></div>
 </td></tr></table></div>
 <p class="centered">
-<strong><strong>Script 2</strong></strong></p><div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% générer un système avec A définie posotive</span>
+<strong><strong>Script 2</strong></strong></p><div class="highlight-matlab"><div class="highlight"><pre><span class="c">%% générer un système avec A définie positive</span>
 <span class="n">n</span><span class="p">=</span><span class="mi">10</span><span class="p">;</span>
 <span class="n">A</span><span class="p">=</span><span class="n">mat_def_pos</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
 
@@ -856,7 +887,7 @@ iter =
 </div>
 <hr class="docutils" />
 <ol class="arabic simple" start="4">
-<li>Tracer le nombre d&#8217;itérations en fonction du paramètre <span class="math">\(\omega \;\in ]0,2[\)</span> avec un test d&#8217;arret fixé.</li>
+<li>Tracer le nombre d&#8217;itérations en fonction du paramètre <span class="math">\(\omega \;\in ]0,2[\)</span> avec un test d’arrêt fixé.</li>
 </ol>
 <p class="centered">
 <strong><strong>Suite Script 2</strong></strong></p><div class="highlight-matlab"><div class="highlight"><pre><span class="c">%descrtisation de la valeur de omega</span>
