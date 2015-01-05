@@ -590,7 +590,63 @@ Pour chaque ligne on besoin de :math:`2k+1` opérations. et on va appliquer ceci
                             &\approx&\dfrac{2}{3}n^3
     \end{eqnarray}
 
+
+Calcul numérique de l'ordre d'un Algorithme
+--------------------------------------------
+
+Pour confirmer le résultat indiquant que l'algorithme de **Gauss** est un algorithme **cubique**, :math:`p=3`
+
+.. math::
+
+    T_n\approx\alpha N^{p}
+
+
+où :math:`T_n` est le temps d'exécution pour une matrice de taille :math:`n`.
+
+on se propose de confirmer numériquement cette valeur. on applique l'algorithme de Gauss pour plusieurs tailles. et on obtient la valeur de :math:`p` par la transformation suivante:
+
+.. math::
+
+    log(T_n)=p\;log(N)+ log(\alpha)
+
+donc si on représente :math:`(log(N),log(T_n))`, alors l'ordre de l'algorithme n'est autre que la **pente** de cette droite.
+
+.. figure:: ../codes/tp03/timingGauss1.png
+    :scale: 60%
+    :alt:    text if image isn't found
+    :align: center
+
+    graphe temps en fonction de la taille de la matrice N.
+
+
+.. figure:: ../codes/tp03/timingGauss2.png
+    :scale: 60%
+    :alt:    text if image isn't found
+    :align: center
+
+    loglog
+
+
+Et finalement on peut appliquer une **regression linéaire** pour calculer les coéfficient de la droite.
+
+.. figure:: ../codes/tp03/regression.png
+    :scale: 60%
+    :alt:    text if image isn't found
+    :align: center
+
+    regression
+
+Ce qui donne l'approximation
+
+.. math::
+
+    p=2.4
+
+.. note::
+
+  Cette valeur va converger vers :math:`3` quand :math:`n \to \infty` dans la simulation.
 ------
+
 
 3. Importante de la stratégie par pivotation.
 

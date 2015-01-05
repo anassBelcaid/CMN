@@ -1048,6 +1048,36 @@ iter =
                         &amp;=&amp;\dfrac{2}{3}n^3 +\dfrac{3}{2}n^2- \dfrac{1}{6}n -1\\
                         &amp;\approx&amp;\dfrac{2}{3}n^3
 \end{eqnarray}\end{split}\]</div>
+<div class="section" id="calcul-numerique-de-l-ordre-d-un-algorithme">
+<h3>Calcul numérique de l&#8217;ordre d&#8217;un Algorithme<a class="headerlink" href="#calcul-numerique-de-l-ordre-d-un-algorithme" title="Permalink to this headline">¶</a></h3>
+<p>Pour confirmer le résultat indiquant que l&#8217;algorithme de <strong>Gauss</strong> est un algorithme <strong>cubique</strong>, <span class="math">\(p=3\)</span></p>
+<div class="math">
+\[T_n\approx\alpha N^{p}\]</div>
+<p>où <span class="math">\(T_n\)</span> est le temps d&#8217;exécution pour une matrice de taille <span class="math">\(n\)</span>.</p>
+<p>on se propose de confirmer numériquement cette valeur. on applique l&#8217;algorithme de Gauss pour plusieurs tailles. et on obtient la valeur de <span class="math">\(p\)</span> par la transformation suivante:</p>
+<div class="math">
+\[log(T_n)=p\;log(N)+ log(\alpha)\]</div>
+<p>donc si on représente <span class="math">\((log(N),log(T_n))\)</span>, alors l&#8217;ordre de l&#8217;algorithme n&#8217;est autre que la <strong>pente</strong> de cette droite.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/timingGauss1.png"><img alt="text if image isn't found" src="_images/timingGauss1.png" style="width: 720.0px; height: 540.6px;" /></a>
+<p class="caption">graphe temps en fonction de la taille de la matrice N.</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/timingGauss2.png"><img alt="text if image isn't found" src="_images/timingGauss2.png" style="width: 720.0px; height: 540.6px;" /></a>
+<p class="caption">loglog</p>
+</div>
+<p>Et finalement on peut appliquer une <strong>regression linéaire</strong> pour calculer les coéfficient de la droite.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/regression.png"><img alt="text if image isn't found" src="_images/regression.png" style="width: 720.0px; height: 540.6px;" /></a>
+<p class="caption">regression</p>
+</div>
+<p>Ce qui donne l&#8217;approximation</p>
+<div class="math">
+\[p=2.4\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Cette valeur va converger vers <span class="math">\(3\)</span> quand <span class="math">\(n \to \infty\)</span> dans la simulation.</p>
+</div>
 <hr class="docutils" />
 <ol class="arabic simple" start="3">
 <li>Importante de la stratégie par pivotation.</li>
@@ -1171,6 +1201,7 @@ iter =
 </ol>
 </div>
 </div>
+</div>
 
 
           </div>
@@ -1183,7 +1214,10 @@ iter =
 <li><a class="reference internal" href="#">Résolution d&#8217;un système d&#8217;équations linéaires</a><ul>
 <li><a class="reference internal" href="#seance-1">Séance 1:</a></li>
 <li><a class="reference internal" href="#seance-2">Séance 2:</a></li>
-<li><a class="reference internal" href="#seance-3">Séance 3</a></li>
+<li><a class="reference internal" href="#seance-3">Séance 3</a><ul>
+<li><a class="reference internal" href="#calcul-numerique-de-l-ordre-d-un-algorithme">Calcul numérique de l&#8217;ordre d&#8217;un Algorithme</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
