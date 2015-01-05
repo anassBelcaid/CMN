@@ -3,15 +3,7 @@ function x=rsl_tri_sup(A,b)
     
     %vérifier si le système est triangulaire
     n=length(A);
-    
-    for i=1:n
-        for j=1:i-1
-            if(A(i,j)~=0)
-                error('matrice non trigulaire inf')
-            end
-        end
-    end
-    
+      
     %vérifier si la matrice est régulière
     for i=1:n
         if(A(i,i)==0)

@@ -536,4 +536,107 @@ et obient :
     nombre d'itération en fonction de la valeur w.
 
 
+-------------------------------
+==========
+Séance 3
+==========
 
+.. topic:: Objectif
+
+  En utilisant Matlab, résoudre un système d'équations linéaires par la méthode directe de Gauss avec une stratégie de pivotation partielle.
+
+
+1. Ecrire une fonction qui résout le système :math:`Ax=b` en utilisant la méthode de **Gauss**.
+
+.. centered:: Simple script pour tester la fonction
+
+
+.. literalinclude:: ../codes/tp03/exercice3_1.m
+    :language: matlab
+    :linenos:
+    :emphasize-lines: 15
+
+
+.. centered:: Gauss
+
+
+.. literalinclude:: ../codes/tp03/gauss_elm_smp.m
+    :language: matlab
+    :linenos:
+
+------
+
+2. Calculer **exactement** le nombre d'opérations (+,ou -,/ et \*) utilisé pour répondre à la question 1.
+
+Pour une matrice :math:`A^{(k)}` on doit éliminer les coefficients :math:`A^{(k)}_{i1}` pour :math:`i\in [2,k]`.
+
+.. math::
+
+    \begin{pmatrix} a^{(k)}_{11} &\ldots & a^{(k)}_{1k}\\
+                    \vdots       &  &\vdots \\
+                    a^{(k)}_{k1}& \ldots & a^{(k)}_{kk}  \end{pmatrix}
+
+
+Pour chaque ligne on besoin de :math:`2k+1` opérations. et on va appliquer ceci pour toutes les lignes sauf la première, donc on aura besoin de :math:`(k-1)(2k+1)` opérations.
+
+
+* L'Algorithme de **Gauss** consiste à répéter cette opération pour des sous matrices qui varient en tailles.
+
+
+.. math::
+    \begin{eqnarray}
+    \sum_{k=2}^n (k-1)(2k+1)&=&2 \sum_{2}^{n}k^2+ \sum_{2}^{n}k -n +1\\
+                            &=&\dfrac{2}{3}n^3 +\dfrac{3}{2}n^2- \dfrac{1}{6}n -1\\
+                            &\approx&\dfrac{2}{3}n^3
+    \end{eqnarray}
+
+------
+
+3. Importante de la stratégie par pivotation.
+
+Pour illustrer l'importance d'une stratégie de **pivotation** pour éviter les erreurs d'arrondis, on se propose de résoudre le système suivant simple
+
+.. _systeme1:
+.. math::
+
+    \begin{pmatrix}10^{-16}& 59.14\\ 5.291 &-6.13 \end{pmatrix} \begin{pmatrix}x_1\\x_2\end{pmatrix}=\begin{pmatrix}10\\1\end{pmatrix}
+
+
+
+
+Ecrire un programme ``exercice3_2.m`` pour résoudre ce système en utilisant
+
+* gauss simple.
+* décomposition de LU.
+
+
+Afficher aussi les erreurs sachant que
+
+.. math::
+
+    x=\begin{pmatrix}1\\10\end{pmatrix}
+
+
+------
+
+4. Ecrire une fonction qui résout le système :math:`Ax=b` en utilisant la méthode de Gauss avec une stratégie de *pivotation partielle*.
+
+
+.. centered:: Exercice3_3.m
+
+.. literalinclude:: ../codes/tp03/exercice3_3.m
+    :language: matlab
+    :linenos:
+    :emphasize-lines: 8
+
+
+
+.. centered:: Gauss pivot partiel
+
+.. literalinclude:: ../codes/tp03/gauss_partial_pivot.m
+    :language: matlab
+    :linenos:
+
+------
+
+5. Ajouter la méthode de **Gauss Pivot partiel** pour la résolution du système systeme1_.

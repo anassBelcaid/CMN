@@ -225,28 +225,12 @@
 22
 23
 24
-25
-26
-27
-28
-29
-30
-31
-32
-33</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>x<span class="p">=</span><span class="nf">rsl_tri_sup</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+25</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>x<span class="p">=</span><span class="nf">rsl_tri_sup</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="c">%% fonction pour résoudre un système supérieur Ax=b</span>
     
     <span class="c">%vérifier si le système est triangulaire</span>
     <span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">A</span><span class="p">);</span>
-    
-    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
-        <span class="k">for</span> <span class="nb">j</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">~=</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">error</span><span class="p">(</span><span class="s">&#39;matrice non trigulaire inf&#39;</span><span class="p">)</span>
-            <span class="k">end</span>
-        <span class="k">end</span>
-    <span class="k">end</span>
-    
+      
     <span class="c">%vérifier si la matrice est régulière</span>
     <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
         <span class="k">if</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
@@ -916,6 +900,276 @@ iter =
 <p class="caption">nombre d&#8217;itération en fonction de la valeur w.</p>
 </div>
 </div>
+<div class="section" id="seance-3">
+<h2>Séance 3<a class="headerlink" href="#seance-3" title="Permalink to this headline">¶</a></h2>
+<div class="topic">
+<p class="topic-title first">Objectif</p>
+<p>En utilisant Matlab, résoudre un système d&#8217;équations linéaires par la méthode directe de Gauss avec une stratégie de pivotation partielle.</p>
+</div>
+<ol class="arabic simple">
+<li>Ecrire une fonction qui résout le système <span class="math">\(Ax=b\)</span> en utilisant la méthode de <strong>Gauss</strong>.</li>
+</ol>
+<p class="centered">
+<strong>Simple script pour tester la fonction</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">%% script pour tester l&#39;algorithme de gauss simple</span>
+
+<span class="c">%% préparer l&#39;espace  de travail</span>
+<span class="n">clc</span>                      <span class="c">%effacer l&#39;ecran</span>
+<span class="n">clear</span> <span class="n">all</span>                <span class="c">%detruire toutes les variables</span>
+
+
+<span class="c">%Un système simple à résoudre </span>
+<span class="n">N</span><span class="p">=</span><span class="mi">10</span><span class="p">;</span>
+
+<span class="n">A</span><span class="p">=</span><span class="mi">20</span><span class="o">*</span><span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">b</span><span class="p">=</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span>
+
+<span class="c">% résoudre le système avec Gauss simple</span>
+<span class="hll"><span class="n">x</span><span class="p">=</span><span class="n">gauss_elm_smp</span><span class="p">([</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
+</span></pre></div>
+</td></tr></table></div>
+<p class="centered">
+<strong>Gauss</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[x]<span class="p">=</span><span class="nf">gauss_elm_smp</span><span class="p">(</span>AB<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%% fonction pour résoudre un système Ax=b en utilisant </span>
+    <span class="c">% la stratégie d&#39;élmination de gauss sans pivot</span>
+    
+    <span class="c">%% Entrée:</span>
+    <span class="c">% AB:  Tableau (n,n+1) contenant la matrice A et b en dernière colonne</span>
+    
+    <span class="c">%% Sortie:</span>
+    <span class="c">% x: approximation de la solution Ax=b</span>
+    
+    
+    <span class="c">%obtenir la taille du tableau</span>
+    <span class="p">[</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">]=</span><span class="nb">size</span><span class="p">(</span><span class="n">AB</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">~=</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">&#39;Votre tableau doit contenir la matrice et le second membre b&#39;</span><span class="p">)</span>
+    <span class="k">end</span>
+    
+    
+    <span class="c">%algorithme de gauss</span>
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span>
+        <span class="c">%tester if A(k,k) different de 0</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">AB</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+                <span class="c">%construire un message d&#39;erreur contenant la ligne du pivot</span>
+                <span class="n">msg</span><span class="p">=</span><span class="n">sprintf</span><span class="p">(</span><span class="s">&#39;pivot %d est null&#39;</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+                <span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">end</span>
+  
+        
+        <span class="c">%elimination pour les lignes k+1...    </span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">=</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>   
+            
+            <span class="c">%calculer le coefficient de multiplication</span>
+            <span class="n">mk</span><span class="p">=</span><span class="n">AB</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">/</span><span class="n">AB</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+            
+            <span class="c">%changer la ligne i</span>
+            <span class="n">AB</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">i</span><span class="p">:</span><span class="k">end</span><span class="p">)=</span><span class="n">AB</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">i</span><span class="p">:</span><span class="k">end</span><span class="p">)</span><span class="o">-</span><span class="n">mk</span><span class="o">*</span><span class="n">AB</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">:</span><span class="k">end</span><span class="p">);</span>
+            
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+   <span class="c">%appliquer l&#39;algorithme de montée sur le système AB</span>
+   <span class="n">x</span><span class="p">=</span><span class="n">rsl_tri_sup</span><span class="p">(</span><span class="n">AB</span><span class="p">(:,</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">AB</span><span class="p">(:,</span><span class="k">end</span><span class="p">));</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<hr class="docutils" />
+<ol class="arabic simple" start="2">
+<li>Calculer <strong>exactement</strong> le nombre d&#8217;opérations (+,ou -,/ et *) utilisé pour répondre à la question 1.</li>
+</ol>
+<p>Pour une matrice <span class="math">\(A^{(k)}\)</span> on doit éliminer les coefficients <span class="math">\(A^{(k)}_{i1}\)</span> pour <span class="math">\(i\in [2,k]\)</span>.</p>
+<div class="math">
+\[\begin{split}\begin{pmatrix} a^{(k)}_{11} &amp;\ldots &amp; a^{(k)}_{1k}\\
+                \vdots       &amp;  &amp;\vdots \\
+                a^{(k)}_{k1}&amp; \ldots &amp; a^{(k)}_{kk}  \end{pmatrix}\end{split}\]</div>
+<p>Pour chaque ligne on besoin de <span class="math">\(2k+1\)</span> opérations. et on va appliquer ceci pour toutes les lignes sauf la première, donc on aura besoin de <span class="math">\((k-1)(2k+1)\)</span> opérations.</p>
+<ul class="simple">
+<li>L&#8217;Algorithme de <strong>Gauss</strong> consiste à répéter cette opération pour des sous matrices qui varient en tailles.</li>
+</ul>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+\sum_{k=2}^n (k-1)(2k+1)&amp;=&amp;2 \sum_{2}^{n}k^2+ \sum_{2}^{n}k -n +1\\
+                        &amp;=&amp;\dfrac{2}{3}n^3 +\dfrac{3}{2}n^2- \dfrac{1}{6}n -1\\
+                        &amp;\approx&amp;\dfrac{2}{3}n^3
+\end{eqnarray}\end{split}\]</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="3">
+<li>Importante de la stratégie par pivotation.</li>
+</ol>
+<p>Pour illustrer l&#8217;importance d&#8217;une stratégie de <strong>pivotation</strong> pour éviter les erreurs d&#8217;arrondis, on se propose de résoudre le système suivant simple</p>
+<div class="math" id="systeme1">
+\[\begin{split}\begin{pmatrix}10^{-16}&amp; 59.14\\ 5.291 &amp;-6.13 \end{pmatrix} \begin{pmatrix}x_1\\x_2\end{pmatrix}=\begin{pmatrix}10\\1\end{pmatrix}\end{split}\]</div>
+<p>Ecrire un programme <tt class="docutils literal"><span class="pre">exercice3_2.m</span></tt> pour résoudre ce système en utilisant</p>
+<ul class="simple">
+<li>gauss simple.</li>
+<li>décomposition de LU.</li>
+</ul>
+<p>Afficher aussi les erreurs sachant que</p>
+<div class="math">
+\[\begin{split}x=\begin{pmatrix}1\\10\end{pmatrix}\end{split}\]</div>
+<hr class="docutils" />
+<ol class="arabic simple" start="4">
+<li>Ecrire une fonction qui résout le système <span class="math">\(Ax=b\)</span> en utilisant la méthode de Gauss avec une stratégie de <em>pivotation partielle</em>.</li>
+</ol>
+<p class="centered">
+<strong>Exercice3_3.m</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">%% préparer l&#39;espace  de travail</span>
+<span class="n">clc</span>                      <span class="c">%effacer l&#39;ecran</span>
+<span class="n">clear</span> <span class="n">all</span>                <span class="c">%detruire toutes les variables</span>
+
+
+<span class="c">%Un système simple à résoudre </span>
+<span class="n">N</span><span class="p">=</span><span class="mi">10</span><span class="p">;</span>
+<span class="hll">
+</span><span class="n">A</span><span class="p">=</span><span class="mi">20</span><span class="o">*</span><span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">b</span><span class="p">=</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span>
+
+<span class="c">% résoudre le système avec Gauss simple</span>
+<span class="n">x</span><span class="p">=</span><span class="n">gauss_partial_pivot</span><span class="p">([</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+<p class="centered">
+<strong>Gauss pivot partiel</strong></p><div class="highlight-matlab"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">function</span><span class="w"> </span>[x]<span class="p">=</span><span class="nf">gauss_partial_pivot</span><span class="p">(</span>AB<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c">%% Résolution d&#39;un système linéaire avec la méthode de gauss avec</span>
+    <span class="c">% une stratégie de pivot partielle.</span>
+    
+    
+    <span class="p">[</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">]=</span><span class="nb">size</span><span class="p">(</span><span class="n">AB</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">~=</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">&#39;la matrice AB doit contenir A et b&#39;</span><span class="p">);</span>
+    <span class="k">end</span>
+    
+    <span class="k">for</span> <span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span>
+        <span class="c">%calculer l&#39;indice du pivot partiel p</span>
+        <span class="p">[</span><span class="n">pivot</span><span class="p">,</span><span class="n">p</span><span class="p">]=</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">AB</span><span class="p">(</span><span class="nb">i</span><span class="p">:</span><span class="k">end</span><span class="p">,</span><span class="nb">i</span><span class="p">)));</span>
+        
+        <span class="c">%coriger p vu qu&#39;on a pris un sous tableau </span>
+        <span class="n">p</span><span class="p">=</span><span class="n">p</span><span class="o">+</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        
+        <span class="c">%permuter la ligne i avec p</span>
+        <span class="n">AB</span><span class="p">([</span><span class="nb">i</span><span class="p">,</span><span class="n">p</span><span class="p">],:)=</span><span class="n">AB</span><span class="p">([</span><span class="n">p</span><span class="p">,</span><span class="nb">i</span><span class="p">],:);</span>
+        
+        
+        <span class="c">%appliquer le procede de gauss</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">=</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+            <span class="c">%constante de multiplication</span>
+            <span class="n">mk</span><span class="p">=</span><span class="n">AB</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">i</span><span class="p">)</span><span class="o">/</span><span class="n">AB</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+            
+            <span class="c">%changer la ligne k</span>
+            <span class="n">AB</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">i</span><span class="p">:</span><span class="k">end</span><span class="p">)=</span><span class="n">AB</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">i</span><span class="p">:</span><span class="k">end</span><span class="p">)</span><span class="o">-</span><span class="n">mk</span><span class="o">*</span><span class="n">AB</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">i</span><span class="p">:</span><span class="k">end</span><span class="p">);</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+  
+    <span class="c">%résolution du système avec l&#39;algorithme de montée</span>
+    <span class="n">x</span><span class="p">=</span><span class="n">rsl_tri_sup</span><span class="p">(</span><span class="n">AB</span><span class="p">(:,</span><span class="mi">1</span><span class="p">:</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">AB</span><span class="p">(:,</span><span class="k">end</span><span class="p">));</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></table></div>
+<hr class="docutils" />
+<ol class="arabic simple" start="5">
+<li>Ajouter la méthode de <strong>Gauss Pivot partiel</strong> pour la résolution du système <a class="reference internal" href="#systeme1">systeme1</a>.</li>
+</ol>
+</div>
 </div>
 
 
@@ -929,6 +1183,7 @@ iter =
 <li><a class="reference internal" href="#">Résolution d&#8217;un système d&#8217;équations linéaires</a><ul>
 <li><a class="reference internal" href="#seance-1">Séance 1:</a></li>
 <li><a class="reference internal" href="#seance-2">Séance 2:</a></li>
+<li><a class="reference internal" href="#seance-3">Séance 3</a></li>
 </ul>
 </li>
 </ul>
