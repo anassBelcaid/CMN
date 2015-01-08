@@ -19,6 +19,6 @@ for i = 1:L
    tic();
    x=gauss_elm_smp([A,b]);
    times(i)=toc();
-   fprintf(fid,'%d\t%.4f\n',n,times(i));
+                                                                                                                                                                                                                                                                                                                                                                                                                      fprintf(fid,'%d\t%.4f\n',n,times(i));
 end
 

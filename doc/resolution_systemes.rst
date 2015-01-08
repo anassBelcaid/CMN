@@ -648,7 +648,7 @@ Ce qui donne l'approximation
 ------
 
 
-3. Importante de la stratégie par pivotation.
+3. Importance de la stratégie par pivotation.
 
 Pour illustrer l'importance d'une stratégie de **pivotation** pour éviter les erreurs d'arrondis, on se propose de résoudre le système suivant simple
 

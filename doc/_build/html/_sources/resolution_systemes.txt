@@ -627,7 +627,7 @@ donc si on représente :math:`(log(N),log(T_n))`, alors l'ordre de l'algorithme 
     loglog
 
 
-Et finalement on peut appliquer une **regression linéaire** pour calculer les coéfficient de la droite.
+Et finalement on peut appliquer une **régression linéaire** pour calculer les coefficient de la droite.
 
 .. figure:: ../codes/tp03/regression.png
     :scale: 60%
@@ -648,7 +648,7 @@ Ce qui donne l'approximation
 ------
 
 
-3. Importante de la stratégie par pivotation.
+3. Importance de la stratégie par pivotation.
 
 Pour illustrer l'importance d'une stratégie de **pivotation** pour éviter les erreurs d'arrondis, on se propose de résoudre le système suivant simple
 
